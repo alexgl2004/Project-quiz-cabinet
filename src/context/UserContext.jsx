@@ -17,17 +17,39 @@ export function UserProvider({ children }) {
 
   function login(name, password) {
     if(password=='1' && name=='1'){
-      console.log(name, password)
+//      console.log(name, password)
       setUser(
         {
           name: name,
           email: name,
           userid: 1,
+          //test data
+          title: 'Mr',
+          name: 'Alex',
+          surname: 'GL',
+          school: 'GGS Karlschule',
+          birthday: '1984-02-26',
+          role: 1 // teacher
         }
       );
-
       return true;
-//      router.push('/profile');
+    }else if(password=='2' && name=='2'){
+      //      console.log(name, password)
+      setUser(
+        {
+          name: name,
+          email: name,
+          userid: 2,
+          //test data
+          title: 'Ms',
+          name: 'Oksana',
+          surname: 'GL',
+          school: 'GGS Karlschule',
+          birthday: '1983-03-31',
+          role: 2 // manager
+        }
+      );
+      return true;
     }else{
       return false;
     }

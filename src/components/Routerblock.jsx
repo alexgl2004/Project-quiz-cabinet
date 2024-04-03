@@ -67,10 +67,14 @@ const Routerblock = () => {
     setCurrent(e.key);
   };
 
-  console.log(user)
+  console.log('-------------',user)
+
+  const arrOfLinksTeacher = ['students','rooms','kits','results'];
+  const arrOfLinksManager = ['quiz','questions','stat'];
 
   return (
     <Flex gap="middle" wrap="wrap">
+      {!user && <Navigate replace to="/login" />}
       <Layout style={layoutStyle}>
         <Header style={headerStyle}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal"  theme="light">
@@ -78,8 +82,39 @@ const Routerblock = () => {
               <Link to="/">Home</Link>
             </Menu.Item>
             <Menu.Item key="a" icon= {<InfoCircleOutlined />}>
-              <Link to="/about">About</Link>
+                  <Link to="/about">About</Link>
             </Menu.Item>
+            {user?
+                user.role==1?(
+                  <>
+                    <Menu.Item key="s" icon= {<InfoCircleOutlined />}>
+                      <Link to="/students">Students</Link>
+                    </Menu.Item>
+                    <Menu.Item key="r" icon= {<InfoCircleOutlined />}>
+                      <Link to="/rooms">Rooms</Link>
+                    </Menu.Item>
+                    <Menu.Item key="kit" icon= {<InfoCircleOutlined />}>
+                      <Link to="/kits">Kits</Link>
+                    </Menu.Item>                  
+                    <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
+                      <Link to="/results">Results</Link>
+                    </Menu.Item>
+                  </>
+                ):(
+                  <>
+                    <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
+                      <Link to="/quiz">Quiz</Link>
+                    </Menu.Item>
+                    <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
+                      <Link to="/questions">Questions</Link>
+                    </Menu.Item>
+                    <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
+                      <Link to="/stat">Statistic</Link>
+                    </Menu.Item>
+                  </>
+                )
+              :''
+            }
             <Menu.Item key="l" icon= {!user?<CheckCircleTwoTone />:<QqOutlined />}  style={{ marginLeft: 'auto' }}>
               {!user?
                 (<Link to="/login">Login</Link>):

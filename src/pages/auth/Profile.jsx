@@ -1,7 +1,9 @@
+import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
+
 import {
   Button,
   Cascader,
@@ -20,27 +22,83 @@ import {
 } from 'antd';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+const dateFormat = 'YYYY-MM-DD';
 const normFile = (e) => {
   if (Array.isArray(e)) {
     return e;
   }
   return e?.fileList;
 };
-const FormDisabledDemo = () => {
-  const [componentDisabled, setComponentDisabled] = useState(false);
 
-  const { user } = useContext(UserContext);
+const FormDisabledDemo = () => {
+  
+  const { changeUserData, user } = useContext(UserContext);
+  const [user_temp, setUsertem] = useState({...user});
+
+  const undoChangeUser = () => {
+    setUsertem({...user});
+  }
+
+  const changeUser = () => {
+    changeUserData(user_temp);
+  }
+
+//  const [value, setValue] = useState(user_temp.title);  
+
+//  console.log(user_temp)
+
+  const onChange = (e,name) => {
+    switch(name){
+      case 'title':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            title: e.target.value,
+          }
+        });
+      break;
+      case 'name':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            name: e.target.value,
+          }
+        });
+      break;
+      case 'surname':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            surname: e.target.value,
+          }
+        });
+      break;
+      case 'school':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            school: e.target.value,
+          }
+        });
+      break;
+    }
+  }
+
+  const onChangeDatePicker = (_, dateStr) => {
+      setUsertem((prev)=>{
+        return {
+          ...prev,
+          birthday: dateStr,
+        }
+      });
+   }
 
   return (
     <>
       {!user && <Navigate replace to="/login" />}
-      <h1>Profile</h1>
-      <Checkbox
-        checked={componentDisabled}
-        onChange={(e) => setComponentDisabled(e.target.checked)}
-      >
-        Form disabled
-      </Checkbox>
+
+      <h1>Profile: {user?user.role==1?'teacher':'manager':''}</h1>
+      
       <Form
         labelCol={{
           span: 4,
@@ -49,74 +107,73 @@ const FormDisabledDemo = () => {
           span: 14,
         }}
         layout="horizontal"
-        disabled={componentDisabled}
+
         style={{
           maxWidth: 600,
         }}
       >
-        <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
-          <Checkbox>Checkbox</Checkbox>
-        </Form.Item>
-        <Form.Item label="Radio">
-          <Radio.Group>
-            <Radio value="apple"> Apple </Radio>
-            <Radio value="pear"> Pear </Radio>
+        <Form.Item label="Title">
+          <Radio.Group 
+            name="title" 
+            onChange={(e)=>{onChange(e,'title')}} 
+            value={user_temp.title}
+          >
+            <Radio value={"Mr"}>Mr</Radio>
+            <Radio value={"Ms"}>Ms</Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item label="Input">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Select">
-          <Select>
-            <Select.Option value="demo">Demo</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="TreeSelect">
-          <TreeSelect
-            treeData={[
-              {
-                title: 'Light',
-                value: 'light',
-                children: [
-                  {
-                    title: 'Bamboo',
-                    value: 'bamboo',
-                  },
-                ],
-              },
-            ]}
+        <Form.Item 
+          label="Name" 
+          rules={[
+            {
+              required: true,
+              message: 'Please input your name!',
+            },
+          ]}
+        >
+          <Input 
+            name="name" 
+            onChange={(e)=>{onChange(e,'name')}} 
+            value={user_temp.name} 
           />
         </Form.Item>
-        <Form.Item label="Cascader">
-          <Cascader
-            options={[
-              {
-                value: 'zhejiang',
-                label: 'Zhejiang',
-                children: [
-                  {
-                    value: 'hangzhou',
-                    label: 'Hangzhou',
-                  },
-                ],
-              },
-            ]}
+        <Form.Item 
+          label="Surname" 
+          rules={[
+            {
+              required: true,
+              message: 'Please input your surname!',
+            },
+          ]}
+        >
+          <Input 
+            name="surname" 
+            onChange={(e)=>{onChange(e,'surname')}} 
+            value={user_temp.surname} 
           />
         </Form.Item>
-        <Form.Item label="DatePicker">
-          <DatePicker />
+        <Form.Item 
+          label="School" 
+          rules={[
+            {
+              required: true,
+              message: 'Please input your school!',
+            },
+          ]}
+        >
+          <Input 
+            name="school" 
+            onChange={(e)=>{onChange(e,'school')}} 
+            value={user_temp.school} 
+          />
         </Form.Item>
-        <Form.Item label="RangePicker">
-          <RangePicker />
-        </Form.Item>
-        <Form.Item label="InputNumber">
-          <InputNumber />
-        </Form.Item>
-        <Form.Item label="TextArea">
-          <TextArea rows={4} />
-        </Form.Item>
-        <Form.Item label="Switch" valuePropName="checked">
-          <Switch />
+        <Form.Item label="Birthday">
+          <DatePicker 
+            name="birthday" 
+            onChange={onChangeDatePicker} 
+
+            defaultValue={dayjs(user_temp.birthday, dateFormat)}
+          />
         </Form.Item>
         <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
@@ -138,14 +195,11 @@ const FormDisabledDemo = () => {
             </button>
           </Upload>
         </Form.Item>
-        <Form.Item label="Button">
-          <Button>Button</Button>
+        <Form.Item>
+          <Button onClick={changeUser}>Save</Button>
         </Form.Item>
-        <Form.Item label="Slider">
-          <Slider />
-        </Form.Item>
-        <Form.Item label="ColorPicker">
-          <ColorPicker />
+        <Form.Item>
+          <Button onClick={undoChangeUser}>Cancel</Button>
         </Form.Item>
       </Form>
     </>
