@@ -73,10 +73,8 @@ const Routerblock = () => {
 
   console.log('-------------',user)
 
-  if(user){
-    const arrUsersLinks = user.folders.split(',');
-    console.log(arrUsersLinks)
-  }
+  const arrUsersLinks = user.folders.split(',');
+  console.log(arrUsersLinks)
 
   return (
     <Flex gap="middle" wrap="wrap">
@@ -99,11 +97,14 @@ const Routerblock = () => {
                     <Menu.Item key="r" icon= {<InfoCircleOutlined />}>
                       <Link to="/rooms">Rooms</Link>
                     </Menu.Item>
+                    <Menu.Item key="kit" icon= {<InfoCircleOutlined />}>
+                      <Link to="/kits">Kits</Link>
+                    </Menu.Item>                  
                     <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
                       <Link to="/results">Results</Link>
                     </Menu.Item>
                   </>
-                ):user.role==2?(
+                ):(
                   <>
                     <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
                       <Link to="/quiz">Quiz</Link>
@@ -113,12 +114,6 @@ const Routerblock = () => {
                     </Menu.Item>
                     <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
                       <Link to="/stat">Statistic</Link>
-                    </Menu.Item>
-                  </>
-                ):(
-                  <>
-                    <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
-                      <Link to="/results">Results</Link>
                     </Menu.Item>
                   </>
                 )

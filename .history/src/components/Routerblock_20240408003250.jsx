@@ -99,6 +99,9 @@ const Routerblock = () => {
                     <Menu.Item key="r" icon= {<InfoCircleOutlined />}>
                       <Link to="/rooms">Rooms</Link>
                     </Menu.Item>
+                    <Menu.Item key="kit" icon= {<InfoCircleOutlined />}>
+                      <Link to="/kits">Kits</Link>
+                    </Menu.Item>                  
                     <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
                       <Link to="/results">Results</Link>
                     </Menu.Item>

@@ -33,9 +33,6 @@ const normFile = (e) => {
 const FormDisabledDemo = () => {
   
   const { changeUserData, user, userMsg } = useContext(UserContext);
-
-  let userMsg_all = userMsg;
-
   const [user_temp, setUsertem] = useState({...user});
 
   const undoChangeUser = () => {
@@ -100,7 +97,7 @@ const FormDisabledDemo = () => {
     <>
       {!user && <Navigate replace to="/login" />}
 
-      <h1>Profile: {user?user.role==1?'teacher':user.role==2?'manager':'student':''}</h1>
+      <h1>Profile: {user?user.role==1?'teacher':'manager':''}</h1>
       
       <Form
         labelCol={{
@@ -199,7 +196,7 @@ const FormDisabledDemo = () => {
           </Upload>
         </Form.Item>
         <Form.Item>
-          <Button onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+          <Button onClick={changeUser}>Save</Button>
         </Form.Item>
         <Form.Item>
           <Button onClick={undoChangeUser}>Cancel</Button>

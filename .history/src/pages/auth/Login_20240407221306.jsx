@@ -9,8 +9,6 @@ const Login = () => {
 
   const { logout, login, user, userMsg } = useContext(UserContext);
 
-  let userMsg_all = userMsg;
-
   const [nameUser, setName] = useState("");
   const [passwordUser, setPassword] = useState("");
 
@@ -18,14 +16,14 @@ const Login = () => {
     console.log('params: ', values);
     login(values.username, values.password)
     if(user){
-      console.log('success: ',userMsg_all)
+      console.log('success: ',userMsg)
     }else{
-      console.log('error: ',userMsg_all)
+      console.log('error: ',userMsg)
     }              
   };
 
   const onFinishFailed = (errorInfo) => {
-    userMsg_all = userMsg + errorInfo
+    alert('Failed:', errorInfo)
 //    console.log('Failed:', errorInfo);
   };
 
@@ -89,8 +87,7 @@ const Login = () => {
               Submit
             </Button>
           </Form.Item>
-        </Form>
-          <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
+        </Form>          
         </div>
       </div>
     </>

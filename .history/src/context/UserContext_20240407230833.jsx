@@ -42,12 +42,6 @@ export function UserProvider({ children }) {
 
   function login(login, password) {
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ login: login, password: password })
-    };        
-
 //    useEffect(() => {
 
   

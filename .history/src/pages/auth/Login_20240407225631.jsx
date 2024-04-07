@@ -7,7 +7,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 
 const Login = () => {
 
-  const { logout, login, user, userMsg } = useContext(UserContext);
+  const { logout, login, user, userMsg, setMsg } = useContext(UserContext);
 
   let userMsg_all = userMsg;
 
@@ -89,8 +89,8 @@ const Login = () => {
               Submit
             </Button>
           </Form.Item>
-        </Form>
           <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
+        </Form>          
         </div>
       </div>
     </>

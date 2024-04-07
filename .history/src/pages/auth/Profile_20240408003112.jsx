@@ -100,7 +100,7 @@ const FormDisabledDemo = () => {
     <>
       {!user && <Navigate replace to="/login" />}
 
-      <h1>Profile: {user?user.role==1?'teacher':user.role==2?'manager':'student':''}</h1>
+      <h1>Profile: {user?user.role==1?'teacher':user.role==2?'manager':'':''}</h1>
       
       <Form
         labelCol={{

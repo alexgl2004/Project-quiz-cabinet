@@ -1,4 +1,4 @@
-import { createContext, useEffect, useContext, useState, useRef } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 //import { users } from "../data/data";
 //import { router } from "expo-router";
 
@@ -9,69 +9,13 @@ export function UserProvider({ children }) {
   // user: null if not logged in
   // { name: string, lastLogin: Date }
   const [user, setUser] = useState(null);//useState({'email':'test','password':'12345','name':'test','userid':'123456785'});
-  const [userMsg, setMsg] = useState('');
+  const responseData = useRef(null)
 
   function changeUserData(userdata){
     setUser(userdata)
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userdata)
-    };
-
-    fetch('http://localhost:3000/users/update', requestOptions)
-    .then((res) => {
-      return res.json();
-    })
-    .then((data) => {
-      if(data.isLogin){
-        setUser(
-          data.userdata
-        )
-        setMsg(data.msg)
-      }else{
-//            console.log(data.msg)
-        setMsg(data.msg)
-      }
-//          console.log(data);
-
-    });    
-
   }
 
-  function login(login, password) {
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ login: login, password: password })
-    };        
-
-//    useEffect(() => {
-
-  
-        fetch('http://localhost:3000/users/login', requestOptions)
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          if(data.isLogin){
-            setUser(
-              data.userdata
-            )
-            setMsg(data.msg)
-          }else{
-//            console.log(data.msg)
-            setMsg(data.msg)
-          }
-
-//          console.log(data);
-
-        });
-//    }, [user]);
-
-/*
+  function login(name, password) {
     if(password=='1' && name=='1'){
 //      console.log(name, password)
       setUser(
@@ -109,8 +53,6 @@ export function UserProvider({ children }) {
     }else{
       return false;
     }
-*/
-
   }
 
 
@@ -147,7 +89,6 @@ export function UserProvider({ children }) {
 
   function logout() {
     setUser(null);
-    setMsg('');
 //    alert('a')
 //    clearOrder(true);
   }
@@ -157,7 +98,6 @@ export function UserProvider({ children }) {
         user,
         login,
         logout,
-        userMsg,
         changeUserData
       }}
     >

@@ -89,8 +89,8 @@ const Login = () => {
               Submit
             </Button>
           </Form.Item>
-        </Form>
           <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
+        </Form>          
         </div>
       </div>
     </>
