@@ -32,7 +32,7 @@ const contentStyle = {
   textAlign: 'left',
   minHeight: 420,
   height: '100%',
-  lineHeight: '120px',
+  lineHeight: '12px',
   color: '#333',
   backgroundColor: '#fff',
   padding:20,

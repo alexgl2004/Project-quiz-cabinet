@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 
 import { UserProvider } from "./context/UserContext.jsx";
+import { TeacherProvider } from "./context/TeacherContext.jsx";
 
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
@@ -45,7 +46,9 @@ function App({routers}) {
 
   return (
     <UserProvider>
-      <RouterProvider router={router}/>
+      <TeacherProvider>
+        <RouterProvider router={router}/>
+      </TeacherProvider>
     </UserProvider>
   );
 }
