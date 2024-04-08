@@ -12,7 +12,6 @@ import Profile from './pages/auth/Profile.jsx';
 
 import Students from './pages/teacher/Students.jsx';
 import Rooms from './pages/teacher/Rooms.jsx';
-import Kits from './pages/teacher/Kits.jsx';
 import Results from './pages/teacher/Results.jsx';
 
 import Quiz from './pages/manager/Quiz.jsx';
@@ -33,7 +32,6 @@ const router = createBrowserRouter(
 
       <Route path="students" element={<Students />} />
       <Route path="rooms" element={<Rooms />} />
-      <Route path="kits" element={<Kits />} />
       <Route path="results" element={<Results />} />
 
       <Route path="quiz" element={<Quiz />} />
