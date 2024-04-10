@@ -174,8 +174,8 @@ const FormDisabledDemo = () => {
           <DatePicker 
             name="birthday" 
             onChange={onChangeDatePicker} 
-            value={dayjs(user_temp.birthday, dateFormat)} 
-            defaultValue={dayjs(user_temp.birthday, dateFormat)} 
+            value={user_temp.birthday?dayjs(user_temp.birthday, dateFormat):''}
+            defaultValue={user_temp.birthday?dayjs(user_temp.birthday, dateFormat):''}
           />
         </Form.Item>
         <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>

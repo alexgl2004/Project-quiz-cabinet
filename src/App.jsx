@@ -13,6 +13,7 @@ import Profile from './pages/auth/Profile.jsx';
 
 import Students from './pages/teacher/Students.jsx';
 import Rooms from './pages/teacher/Rooms.jsx';
+import Room from './pages/teacher/Room.jsx';
 import Results from './pages/teacher/Results.jsx';
 
 import Quiz from './pages/manager/Quiz.jsx';
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
 
       <Route path="students" element={<Students />} />
       <Route path="rooms" element={<Rooms />} />
+      <Route path="rooms/:id" element={<Room />} />
       <Route path="results" element={<Results />} />
 
       <Route path="quiz" element={<Quiz />} />

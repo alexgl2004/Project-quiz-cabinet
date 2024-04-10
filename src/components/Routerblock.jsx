@@ -36,7 +36,7 @@ const contentStyle = {
   color: '#333',
   backgroundColor: '#fff',
   padding:20,
-  paddinBottom:70
+  paddingBottom:70
 };
 
 const footerStyle = {
@@ -71,11 +71,11 @@ const Routerblock = () => {
     setCurrent(e.key);
   };
 
-  console.log('-------------',user)
+//  console.log('-------------',user)
 
   if(user){
     const arrUsersLinks = user.folders.split(',');
-    console.log(arrUsersLinks)
+//    console.log(arrUsersLinks)
   }
 
   return (
