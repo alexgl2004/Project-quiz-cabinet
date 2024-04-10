@@ -291,7 +291,11 @@ const Room = () => {
       {room?(<>
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
-            <h1>Room: {room.room.name}</h1>
+            <h1>
+              Room: {room.room.name}
+              <Link style={{fontSize:12,float:'right'}} to='/rooms'>Back to Rooms</Link>
+            </h1>
+            
             <div className="description" style={{margin:20}}>{room.room.description}</div>
           </>:
           <>

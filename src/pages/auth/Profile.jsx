@@ -30,7 +30,7 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-const FormDisabledDemo = () => {
+const Profile = () => {
   
   const { changeUserData, user, userMsg } = useContext(UserContext);
 
@@ -52,6 +52,22 @@ const FormDisabledDemo = () => {
 
   const onChange = (e,name) => {
     switch(name){
+      case 'email':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            email: e.target.value,
+          }
+        });
+      break;
+      case 'password':
+        setUsertem((prev)=>{
+          return {
+            ...prev,
+            password: e.target.value,
+          }
+        });
+      break;
       case 'title':
         setUsertem((prev)=>{
           return {
@@ -198,6 +214,36 @@ const FormDisabledDemo = () => {
             </button>
           </Upload>
         </Form.Item>
+        <Form.Item 
+          label="email" 
+          rules={[
+            {
+              required: false,
+              message: 'Please input your school!',
+            },
+          ]}
+        >
+          <Input 
+            name="email" 
+            onChange={(e)=>{onChange(e,'email')}} 
+            value={user_temp.email}
+          />
+        </Form.Item>
+        <Form.Item 
+          label="password" 
+          rules={[
+            {
+              required: true,
+              message: 'Please input your school!',
+            },
+          ]}
+        >
+          <Input 
+            name="password" 
+            onChange={(e)=>{onChange(e,'password')}} 
+            value={user_temp.password} 
+          />
+        </Form.Item>
         <Form.Item>
           <Button onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
         </Form.Item>
@@ -209,4 +255,4 @@ const FormDisabledDemo = () => {
     </>
   );
 };
-export default () => <FormDisabledDemo />;
+export default () => <Profile />;
