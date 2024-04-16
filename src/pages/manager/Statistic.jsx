@@ -6,7 +6,7 @@ const Statistic = () => {
   const { user } = useContext(UserContext);
   return (
     <>
-      {user && user.role==1 && <Navigate replace to="/profile" />}
+      {user && user.role!=2 && <Navigate replace to="/profile" />}
       <h1>Statistic</h1>
     </>
   )

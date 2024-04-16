@@ -293,7 +293,7 @@ const Room = () => {
           <>
             <h1>
               Room: {room.room.name}
-              <Link style={{fontSize:12,float:'right'}} to='/rooms'>Back to Rooms</Link>
+              <Link style={{fontSize:12,float:'right'}} to='/rooms'>Back to the Rooms</Link>
             </h1>
             
             <div className="description" style={{margin:20}}>{room.room.description}</div>
@@ -303,14 +303,14 @@ const Room = () => {
               <Input 
                 name="name" 
                 onChange={(e)=>{onChangeND(e,'name')}} 
-                value={tempNameDescription.name?tempNameDescription.name:room.room.name} 
+                value={tempNameDescription.name}
               />
             </Form.Item>
             <Form.Item label="Description">
               <TextArea rows={4} 
                 name="description" 
                 onChange={(e)=>{onChangeND(e,'description')}} 
-                value={tempNameDescription.description?tempNameDescription.description:room.room.description}
+                value={tempNameDescription.description}
               />
             </Form.Item>
           </>
@@ -327,86 +327,8 @@ const Room = () => {
           </>
         }
         <hr />
-        <div style={{display:'flex'}}>
-            <div className="students_block" style={{width:"50%"}}>
-              {!room.room.isRunning?
-                <div>
-                  <h4>Students are free: </h4>
-                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
-                    {studentsRoom && studentsRoom.outRoom.length>0?studentsRoom.outRoom.map((student,index)=>{
-                      return (
-                        <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
-                          <div style={{width:'75%'}}>{student.name} {student.surname}</div>
-                          {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>In room</Button></div>:
-                            ''
-                          }
-                        </div>
-                      )
-                    }):<div>All in work! Click "Out Room" for remove student from room</div>}
-                  </div>
-                </div>:''
-              }
-              <div>
-                <h4>Students are in the room: </h4>
-                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
-                {studentsRoom && studentsRoom.inRoom.length>0?studentsRoom.inRoom.map((student,index)=>{
-                    return (
-                      <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
-                        <div style={{width:'75%'}}>{student.name} {student.surname}</div>
-                        {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>Out room</Button></div>:
-                          ''
-                        }
-                      </div>
-                    )
-                  }):<div>Click "In Room" for add student to room</div>}
-                </div>
-              </div>
-            </div>
-            <div className="quiz_block" style={{width:'50%'}}>
-              {!room.room.isRunning?
-                <div>
-                  <h4>Quizes Not in use: </h4>
-                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
-                    {quizesRoom && quizesRoom.outRoom.length>0?quizesRoom.outRoom.map((quiz,index)=>{
-                      return (
-                        <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
-                          <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
-                          {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>In room</Button></div>
-                            :
-                            ''
-                          }
-                        </div>
-                      )
-                    }):<div>All in work! Click "Out Room" for remove quiz from room</div>}
-                  </div>
-                </div>:''
-              }
-              <div>
-                <h4>Qizes in room: </h4>
-                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
-                {quizesRoom && quizesRoom.inRoom.length>0?quizesRoom.inRoom.map((quiz,index)=>{
-                    return (
-                      <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
-                        <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
-                        {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>Out room</Button></div>
-                          :
-                          ''
-                        }
-                      </div>
-                    )
-                  }):<div>Click "In Room" for add quiz to room</div>}
-                </div>
-              </div>
-            </div>
-        </div>
         <div className="button_Block" style={{marginTop:20,width:'100%'}}>
           <Form layout="horizontal" style={{maxWidth: 1000}}>
-            <Button onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
-            <Button onClick={()=>{setRoom(null)}} disabled={room.room.isRunning}>RESET</Button>
             <div className="Start-block">
               <div style={{display:"flex",marginTop:10,width:'100%'}}>
                 <div style={{width:'25%'}}>
@@ -441,7 +363,86 @@ const Room = () => {
                 </div>
               </div>
             </div>
+            <Button onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
+            <Button onClick={()=>{setRoom(null)}} disabled={room.room.isRunning}>RESET</Button>
           </Form>
+        </div>
+        <hr />
+        <div style={{display:'flex'}}>
+            <div className="students_block" style={{width:"50%"}}>
+              {!room.room.isRunning?
+                <div>
+                  <h4>Students available:</h4>
+                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
+                    {studentsRoom && studentsRoom.outRoom.length>0?studentsRoom.outRoom.map((student,index)=>{
+                      return (
+                        <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                          <div style={{width:'75%'}}>{student.name} {student.surname}</div>
+                          {!room.room.isRunning?
+                            <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>Add</Button></div>:
+                            ''
+                          }
+                        </div>
+                      )
+                    }):<div>All in work! Click "Take out" for remove student from room</div>}
+                  </div>
+                </div>:''
+              }
+              <div>
+                <h4>Students participating:</h4>
+                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
+                {studentsRoom && studentsRoom.inRoom.length>0?studentsRoom.inRoom.map((student,index)=>{
+                    return (
+                      <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                        <div style={{width:'75%'}}>{student.name} {student.surname}</div>
+                        {!room.room.isRunning?
+                          <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>Remove</Button></div>:
+                          ''
+                        }
+                      </div>
+                    )
+                  }):<div>Click "Take in" for add student to room</div>}
+                </div>
+              </div>
+            </div>
+            <div className="quiz_block" style={{width:'50%'}}>
+              {!room.room.isRunning?
+                <div>
+                  <h4>Qizzes available: </h4>
+                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
+                    {quizesRoom && quizesRoom.outRoom.length>0?quizesRoom.outRoom.map((quiz,index)=>{
+                      return (
+                        <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                          <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
+                          {!room.room.isRunning?
+                            <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>Add</Button></div>
+                            :
+                            ''
+                          }
+                        </div>
+                      )
+                    }):<div>All in work! Click "Take out" for remove quiz from room</div>}
+                  </div>
+                </div>:''
+              }
+              <div>
+                <h4>Qizzes accepted:</h4>
+                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
+                {quizesRoom && quizesRoom.inRoom.length>0?quizesRoom.inRoom.map((quiz,index)=>{
+                    return (
+                      <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                        <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
+                        {!room.room.isRunning?
+                          <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>Remove</Button></div>
+                          :
+                          ''
+                        }
+                      </div>
+                    )
+                  }):<div>Click "Take in" for add quiz to room</div>}
+                </div>
+              </div>
+            </div>
         </div>
       </>):
       ''}

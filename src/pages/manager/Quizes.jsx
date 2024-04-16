@@ -6,33 +6,38 @@ import {
 } from 'antd';
 
 
-const Rooms = () => {
+const Quizes = () => {
 
   const { user } = useContext(UserContext);
-  const [rooms, setRooms] = useState(null);
-  const [newRoomID, setnewRoomID] = useState(null);
+  const [quizes, setQuizes] = useState(null);
+  const [newQuizID, setnewQuizID] = useState(null);
 //  const { rooms, getRooms } = useContext(TeacherContext);
 
   useEffect(() => {
-    getRooms()
+    getQuizes()
   }, []);
 
-  function addRoom(){
+  function addQuiz(){
 
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: user.id })
+      body: JSON.stringify({ 
+        name: 'New Quiz',
+        description: 'Description for Quiz',
+        params:'',
+        creator_id: user.id
+      })
     };
 
-    fetch('http://localhost:3000/users/rooms/add', requestOptions)
+    fetch('http://localhost:3000/quiz/add', requestOptions)
     .then((res) => {
       return res.json();
     })
     .then((data) => {
 //      console.log(data)
-      if(data.room_id){
-        setnewRoomID(data.room_id)
+      if(data.quiz_id){
+        setnewQuizID(data.quiz_id)
       }else{
 //       console.log(data.msg)
 //       setMsg(data.msg)
@@ -41,7 +46,7 @@ const Rooms = () => {
     });
   }
 
-  function getRooms(){
+  function getQuizes(){
     //    console.log(students)
     const requestOptions = {
       method: 'POST',
@@ -52,15 +57,15 @@ const Rooms = () => {
 //    useEffect(() => {
 
 
-    fetch('http://localhost:3000/users/rooms', requestOptions)
+    fetch('http://localhost:3000/quiz', requestOptions)
     .then((res) => {
       return res.json();
     })
     .then((data) => {
 //          console.log(data)
-      if(data.roomsData){
-        setRooms(
-          data.roomsData
+      if(data.quizesData){
+        setQuizes(
+          data.quizesData
         )
 //        setMsg(data.msg)
       }else{
@@ -73,27 +78,27 @@ const Rooms = () => {
     });
 //    }, [user]);
     
-    }  
+    }
 
-//  console.log(2,rooms)
+    console.log(2,quizes)
 
 //[!] Add buttons to delete Room
 
   return (
     <>
-      {user && user.role!=1 && <Navigate replace to="/profile" />}
-      {newRoomID?<><Navigate replace to={"/rooms/"+newRoomID} /></>:''}
-      <h1>Rooms</h1>
-      {rooms?rooms.map((room,index)=>{
+      {user && user.role!=2 && <Navigate replace to="/profile" />}
+      {newQuizID?<><Navigate replace to={"/quiz/"+newQuizID} /></>:''}
+      <h1>Quizzes</h1>
+      {quizes?quizes.map((quiz,index)=>{
         return (
-          <div key={'room_'+index} style={{borderWidth:2,padding:10}}>
-            {index+1}. <Link to={'/rooms/' + room.id}>{room.name}</Link>
+          <div key={'quiz_'+index} style={{borderWidth:2,padding:10}}>
+            {index+1}. <Link to={'/quiz/' + quiz.id}>{quiz.name}</Link>
           </div>
         )
       }):''}
-      <Button onClick={addRoom}>Add new Room</Button>
+      <Button onClick={addQuiz}>Add new Quiz</Button>
     </>
   )
 }
 
-export default Rooms
+export default Quizes

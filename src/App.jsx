@@ -18,6 +18,8 @@ import Room from './pages/teacher/Room.jsx';
 import Results from './pages/teacher/Results.jsx';
 
 import Quiz from './pages/manager/Quiz.jsx';
+import Quizes from './pages/manager/Quizes.jsx';
+
 import Questions from './pages/manager/Questions.jsx';
 import Statistic from './pages/manager/Statistic.jsx';
 
@@ -39,7 +41,8 @@ const router = createBrowserRouter(
       <Route path="rooms" element={<Rooms />} />
       <Route path="results" element={<Results />} />
 
-      <Route path="quiz" element={<Quiz />} />
+      <Route path="quiz/:id" element={<Quiz />} />
+      <Route path="quiz" element={<Quizes />} />
       <Route path="questions" element={<Questions />} />
       <Route path="stat" element={<Statistic />} />
     </Route>
