@@ -10,7 +10,7 @@ import {
 } from 'antd';
 
 const { TextArea } = Input;
-
+//[+] добавить возможность фиксации для уже взятых в работу тестов и вопросов, а так же добавить возможность разблокирования(!)
 const Quiz = () => {
   const { user } = useContext(UserContext);
 //  const { quiz, getQuiz, setQuiz } = useContext(TeacherContext);
