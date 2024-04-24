@@ -47,6 +47,9 @@ const Room = () => {
 
   function getRoom(room_id){
     //    console.log(students)
+
+    if(user==null) return 
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

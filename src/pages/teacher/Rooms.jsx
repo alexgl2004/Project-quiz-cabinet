@@ -42,6 +42,8 @@ const Rooms = () => {
   }
 
   function getRooms(){
+
+    if(user==null) return 
     //    console.log(students)
     const requestOptions = {
       method: 'POST',
@@ -82,9 +84,9 @@ const Rooms = () => {
   return (
     <>
       {user && user.role!=1 && <Navigate replace to="/profile" />}
-      {newRoomID?<><Navigate replace to={"/rooms/"+newRoomID} /></>:''}
+      {user && newRoomID?<><Navigate replace to={"/rooms/"+newRoomID} /></>:''}
       <h1>Rooms</h1>
-      {rooms?rooms.map((room,index)=>{
+      {user && rooms?rooms.map((room,index)=>{
         return (
           <div key={'room_'+index} style={{borderWidth:2,padding:10}}>
             {index+1}. <Link to={'/rooms/' + room.id}>{room.name}</Link>

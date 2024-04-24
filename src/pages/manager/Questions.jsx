@@ -20,7 +20,7 @@ const Questions = () => {
 //  const [answers, setAnswers] = useState(null);  
 //  const [questionID, setQuestionID] = useState(null);
   const [tempNameDescription, setTempNameDescription] = useState(null);
-  const [filterQuiestion, setFilterQuiestion] = useState({text:''});
+  const [filterQuestion, setFilterQuestion] = useState({text:''});
 
   useEffect(() => {
     getQuestions()
@@ -39,8 +39,8 @@ const Questions = () => {
   const onChangeND = (e,field) => {
     switch(field){
       case 'filter':
-        setFilterQuiestion({text:e.target.value})
-        onFilterFreeQuiestion(e.target.value)
+        setFilterQuestion({text:e.target.value})
+        onFilterFreeQuestion(e.target.value)
       break;
       case 'header':
         setTempNameDescription({
@@ -76,7 +76,7 @@ const Questions = () => {
     }
   }
 
-  const onFilterFreeQuiestion = (text) => {
+  const onFilterFreeQuestion = (text) => {
     setQuestions({
       ...questions,
         filtered: questions.firstLoaded.filter((value,index)=>{
@@ -120,7 +120,10 @@ const Questions = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({...tempNameDescription,user_id:user.id})
+      body: JSON.stringify({
+        ...tempNameDescription,
+        user_id:user.id
+      })
     };
 
     fetch('http://localhost:3000/quiz/questions/'+questions.questionID+'/edit', requestOptions)
@@ -316,7 +319,7 @@ const Questions = () => {
             <Input 
               name="filter" 
               onChange={(e)=>{onChangeND(e,'filter')}}
-              value={filterQuiestion.text?filterQuiestion.text:''}
+              value={filterQuestion.text?filterQuestion.text:''}
             />
           </Form.Item>
           <div style={{borderStyle:'solid',borderWidth:1,borderColor:'#ccc'}}>
