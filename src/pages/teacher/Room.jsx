@@ -7,7 +7,8 @@ import {
   Button,
   Form,
   DatePicker,
-  Input
+  Input,
+  Checkbox
 } from 'antd';
 
 const { TextArea } = Input;
@@ -73,7 +74,7 @@ const Room = () => {
       }else{
 //          setMsg(data.msg)
       }
-//      console.log(data);
+      console.log(data);
     });
 //    }, [user]);
   }
@@ -177,6 +178,9 @@ const Room = () => {
 
     let temp_room = {...room}
     let temp_days = dayjs()
+
+//    console.log('aaaa',temp_days)
+
     if(running==2){
       temp_room.room.date_end = temp_days.$y+'-' + addzerro(temp_days.$M+1)+'-'+addzerro(temp_days.$D+1)
       temp_room.room.stopedNow = 1
@@ -217,19 +221,19 @@ const Room = () => {
 //  console.log(5, room)
 
   const onChangeStartDatePicker = (_, dateStr) => {
+    contentChanged.current = 1
     setRoom((prev)=>{
       prev.room.date_start = dateStr
-      return prev
+      return {...prev}
     });
-    contentChanged.current = 1
   }
 
   const onChangeEndDatePicker = (_, dateStr) => {
+    contentChanged.current = 1
     setRoom((prev)=>{
       prev.room.date_end = dateStr
-      return prev
+      return {...prev}
     });
-    contentChanged.current = 1
   }
 
   const openEdit = () => {
@@ -253,7 +257,7 @@ const Room = () => {
     setRoom((prev)=>{
       prev.room.name = tempNameDescription.name;
       prev.room.description = tempNameDescription.description;
-      return prev;
+      return {...prev}
     })
 
     saveRoomData(
@@ -269,6 +273,13 @@ const Room = () => {
 
   const onChangeND = (e,field) => {
     switch(field){
+      case 'show_results':
+        contentChanged.current = 1
+        setRoom((prev)=>{
+          prev.room.show_results = (e.target.checked?1:0)
+          return {...prev}
+        });
+      break;
       case 'name':
         setTempNameDescription({
           name:e.target.value,
@@ -358,6 +369,9 @@ const Room = () => {
                       disabled={room.room.isRunning}
                     />
                   </Form.Item>
+                </div>
+                <div style={{width:'25%'}}>
+                  <Checkbox value="1" checked={room.room.show_results && room.room.show_results?true:false} onChange={(e)=>{onChangeND(e,'show_results')}} disabled={room.room.isRunning}>Show results to students</Checkbox>
                 </div>
                 <div style={{}}>
                   {!room.room.isRunning?(

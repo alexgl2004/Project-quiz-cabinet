@@ -205,6 +205,9 @@ const StudentC = () => {
             maxWidth: 600,
           }}
         >
+          <Form.Item label="Login">
+            <b>{student_temp.login}</b>
+          </Form.Item>
           <Form.Item label="Title">
             <Radio.Group 
               name="title" 

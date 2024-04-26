@@ -131,6 +131,9 @@ const Profile = () => {
           maxWidth: 600,
         }}
       >
+        <Form.Item label="Login">
+          <b>{user_temp.login}</b>
+        </Form.Item>
         <Form.Item label="Title">
           <Radio.Group 
             name="title" 
