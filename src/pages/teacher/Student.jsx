@@ -57,7 +57,7 @@ const StudentC = () => {
 
 //    useEffect(() => {
 
-    fetch('http://localhost:3000/users/students/' + student_id, requestOptions)
+    fetch('http://192.168.2.134:3000/users/students/' + student_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -82,7 +82,7 @@ const StudentC = () => {
       body: JSON.stringify(stundentData)
     };
 
-    fetch('http://localhost:3000/users/students/'+params.id+'/edit', requestOptions)
+    fetch('http://192.168.2.134:3000/users/students/'+params.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })

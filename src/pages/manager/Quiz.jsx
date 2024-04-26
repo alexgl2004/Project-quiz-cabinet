@@ -50,7 +50,7 @@ const Quiz = () => {
 
 //    useEffect(() => {
 
-    fetch('http://localhost:3000/quiz/' + quiz_id, requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/' + quiz_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -85,7 +85,7 @@ const Quiz = () => {
       body: JSON.stringify(quizdata)
     };
 
-    fetch('http://localhost:3000/quiz/'+quiz.quiz.id+'/edit', requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/'+quiz.quiz.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })

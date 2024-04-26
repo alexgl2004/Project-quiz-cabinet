@@ -26,9 +26,9 @@ const Results = () => {
 
     fetch(
       user.role==3?
-      'http://localhost:3000/users/results/student'
+      'http://192.168.2.134:3000/users/results/student'
       :
-      'http://localhost:3000/users/results',
+      'http://192.168.2.134:3000/users/results',
       requestOptions
     )
     .then((res) => {

@@ -25,7 +25,7 @@ const Rooms = () => {
       body: JSON.stringify({ user_id: user.id })
     };
 
-    fetch('http://localhost:3000/users/rooms/add', requestOptions)
+    fetch('http://192.168.2.134:3000/users/rooms/add', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -54,7 +54,7 @@ const Rooms = () => {
 //    useEffect(() => {
 
 
-    fetch('http://localhost:3000/users/rooms', requestOptions)
+    fetch('http://192.168.2.134:3000/users/rooms', requestOptions)
     .then((res) => {
       return res.json();
     })

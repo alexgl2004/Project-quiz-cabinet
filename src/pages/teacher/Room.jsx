@@ -59,7 +59,7 @@ const Room = () => {
 
 //    useEffect(() => {
 
-    fetch('http://localhost:3000/users/rooms/' + room_id, requestOptions)
+    fetch('http://192.168.2.134:3000/users/rooms/' + room_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -93,7 +93,7 @@ const Room = () => {
       body: JSON.stringify(roomdata)
     };
 
-    fetch('http://localhost:3000/users/rooms/'+room.room.id+'/edit', requestOptions)
+    fetch('http://192.168.2.134:3000/users/rooms/'+room.room.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })

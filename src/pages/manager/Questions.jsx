@@ -126,7 +126,7 @@ const Questions = () => {
       })
     };
 
-    fetch('http://localhost:3000/quiz/questions/'+questions.questionID+'/edit', requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/questions/'+questions.questionID+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -184,7 +184,7 @@ const Questions = () => {
         body: JSON.stringify({ user_id: user.id })
       };
 
-      fetch('http://localhost:3000/quiz/questions/'+question_id+'/delete', requestOptions)
+      fetch('http://192.168.2.134:3000/quiz/questions/'+question_id+'/delete', requestOptions)
       .then((res) => {
         return res.json();
       })
@@ -206,7 +206,7 @@ const Questions = () => {
       body: JSON.stringify({ user_id: user.id })
     };
 
-    fetch('http://localhost:3000/quiz/questions/add', requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/questions/add', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -243,7 +243,7 @@ const Questions = () => {
 //    useEffect(() => {
 
 
-    fetch('http://localhost:3000/quiz/questions', requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/questions', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -276,7 +276,7 @@ const Questions = () => {
 //    useEffect(() => {
 
 
-    fetch('http://localhost:3000/quiz/questions/'+question_id, requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/questions/'+question_id, requestOptions)
     .then((res) => {
       return res.json();
     })
