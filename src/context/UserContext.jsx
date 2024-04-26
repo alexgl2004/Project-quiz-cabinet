@@ -20,7 +20,7 @@ export function UserProvider({ children }) {
       body: JSON.stringify(userdata)
     };
 
-    fetch('http://localhost:3000/users/update', requestOptions)
+    fetch('http://192.168.2.134:3000/users/update', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -51,7 +51,7 @@ export function UserProvider({ children }) {
 //    useEffect(() => {
 
   
-        fetch('http://localhost:3000/users/login', requestOptions)
+        fetch('http://192.168.2.134:3000/users/login', requestOptions)
         .then((res) => {
           return res.json();
         })

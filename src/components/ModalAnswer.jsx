@@ -31,7 +31,7 @@ const ModalAnswer = (params) => {
       body: JSON.stringify(tempNameDescription)
     };
 
-    fetch('http://localhost:3000/quiz/answers/'+(add?'add':tempNameDescription.id+'/edit'), requestOptions)
+    fetch('http://192.168.2.134:3000/quiz/answers/'+(add?'add':tempNameDescription.id+'/edit'), requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -51,7 +51,7 @@ const ModalAnswer = (params) => {
         body: JSON.stringify({del:1})
       };
 
-      fetch('http://localhost:3000/quiz/answers/' + answerId + '/delete', requestOptions)
+      fetch('http://192.168.2.134:3000/quiz/answers/' + answerId + '/delete', requestOptions)
       .then((res) => {
         return res.json();
       })
