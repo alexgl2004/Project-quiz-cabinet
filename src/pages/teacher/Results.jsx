@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 import StudentResults from "../../components/StudentResults.jsx";
 import QRCode from "react-qr-code";
 import { Button, Modal, Space } from 'antd';
+import { path_server } from '../../../path.js';
 
 const Results = () => {
 
@@ -21,13 +22,14 @@ const Results = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
 
-      fetch('http://192.168.2.134:3000/users/students', requestOptions)
+      fetch(path_server+'/users/students', requestOptions)
       .then((res) => {
         return res.json();
       })
@@ -54,7 +56,7 @@ const Results = () => {
       
       {user!=null && user.role==1 && studentsMass?
         studentsMass.map((elem)=>{
-          return <StudentResults oneUser={false} userId={elem.id} firstname={elem.name}  lastname={elem.surname} />
+          return <StudentResults key={elem.id+'_student'} oneUser={false} userId={elem.id} firstname={elem.name}  lastname={elem.surname} />
         }):''
 
       }

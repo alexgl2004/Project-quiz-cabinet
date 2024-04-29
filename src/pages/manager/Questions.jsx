@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Navigate, Outlet, Link } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import ModalAnswer from "../../components/ModalAnswer.jsx";
+import { path_server } from '../../../path.js';
 
 import {
   Button,
@@ -123,10 +124,11 @@ const Questions = () => {
       body: JSON.stringify({
         ...tempNameDescription,
         user_id:user.id
-      })
+      }),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/quiz/questions/'+questions.questionID+'/edit', requestOptions)
+    fetch(path_server+'/quiz/questions/'+questions.questionID+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -181,10 +183,11 @@ const Questions = () => {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.id })
+        body: JSON.stringify({ user_id: user.id }),
+        mode:'cors'
       };
 
-      fetch('http://192.168.2.134:3000/quiz/questions/'+question_id+'/delete', requestOptions)
+      fetch(path_server+'/quiz/questions/'+question_id+'/delete', requestOptions)
       .then((res) => {
         return res.json();
       })
@@ -203,10 +206,11 @@ const Questions = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: user.id })
+      body: JSON.stringify({ user_id: user.id }),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/quiz/questions/add', requestOptions)
+    fetch(path_server+'/quiz/questions/add', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -237,13 +241,14 @@ const Questions = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
 
-    fetch('http://192.168.2.134:3000/quiz/questions', requestOptions)
+    fetch(path_server+'/quiz/questions', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -270,13 +275,14 @@ const Questions = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
 
-    fetch('http://192.168.2.134:3000/quiz/questions/'+question_id, requestOptions)
+    fetch(path_server+'/quiz/questions/'+question_id, requestOptions)
     .then((res) => {
       return res.json();
     })

@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from 'react'
 import { Navigate, Outlet, Link } from 'react-router-dom';
 import QRCode from "react-qr-code";
 import { Button, Modal, Space } from 'antd';
+import { path_server } from '../../path';
 
 const StudentResults = (params) => {
 
@@ -17,11 +18,12 @@ const StudentResults = (params) => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: params.userId })
+      body: JSON.stringify({ user_id: params.userId }),
+      mode:'cors'
     };
 
     fetch(
-      'http://192.168.2.134:3000/users/results/student',
+      path_server+'/users/results/student',
       requestOptions
     )
     .then((res) => {

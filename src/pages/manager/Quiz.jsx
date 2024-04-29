@@ -8,6 +8,7 @@ import {
   DatePicker,
   Input
 } from 'antd';
+import { path_server } from '../../../path.js';
 
 const { TextArea } = Input;
 //[+] добавить возможность фиксации для уже взятых в работу тестов и вопросов, а так же добавить возможность разблокирования(!)
@@ -45,12 +46,13 @@ const Quiz = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
-    fetch('http://192.168.2.134:3000/quiz/' + quiz_id, requestOptions)
+    fetch(path_server+'/quiz/' + quiz_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -82,10 +84,11 @@ const Quiz = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(quizdata)
+      body: JSON.stringify(quizdata),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/quiz/'+quiz.quiz.id+'/edit', requestOptions)
+    fetch(path_server+'/quiz/'+quiz.quiz.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })

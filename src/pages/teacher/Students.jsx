@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button
 } from 'antd';
+import { path_server } from '../../../path.js';
 
 
 const Students = () => {
@@ -21,13 +22,14 @@ const Students = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
 
-      fetch('http://192.168.2.134:3000/users/students', requestOptions)
+      fetch(path_server+'/users/students', requestOptions)
       .then((res) => {
         return res.json();
       })
@@ -55,10 +57,11 @@ const Students = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: user.id })
+      body: JSON.stringify({ user_id: user.id }),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/users/students/add', requestOptions)
+    fetch(path_server+'/users/students/add', requestOptions)
     .then((res) => {
       return res.json();
     })

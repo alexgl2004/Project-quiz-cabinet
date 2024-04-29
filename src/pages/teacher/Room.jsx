@@ -10,6 +10,7 @@ import {
   Input,
   Checkbox
 } from 'antd';
+import { path_server } from '../../../path.js';
 
 const { TextArea } = Input;
 
@@ -54,12 +55,13 @@ const Room = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
-    fetch('http://192.168.2.134:3000/users/rooms/' + room_id, requestOptions)
+    fetch(path_server+'/users/rooms/' + room_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -90,10 +92,11 @@ const Room = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(roomdata)
+      body: JSON.stringify(roomdata),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/users/rooms/'+room.room.id+'/edit', requestOptions)
+    fetch(path_server+'/users/rooms/'+room.room.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })

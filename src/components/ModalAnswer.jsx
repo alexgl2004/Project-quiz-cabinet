@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Form, Input, Button, Modal, Space } from 'antd';
+import { path_server } from '../../path';
 
 const { TextArea } = Input;
 
@@ -28,10 +29,11 @@ const ModalAnswer = (params) => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tempNameDescription)
+      body: JSON.stringify(tempNameDescription),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/quiz/answers/'+(add?'add':tempNameDescription.id+'/edit'), requestOptions)
+    fetch(path_server+'/quiz/answers/'+(add?'add':tempNameDescription.id+'/edit'), requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -48,10 +50,11 @@ const ModalAnswer = (params) => {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({del:1})
+        body: JSON.stringify({del:1}),
+        mode:'cors'
       };
 
-      fetch('http://192.168.2.134:3000/quiz/answers/' + answerId + '/delete', requestOptions)
+      fetch(path_server+'/quiz/answers/' + answerId + '/delete', requestOptions)
       .then((res) => {
         return res.json();
       })

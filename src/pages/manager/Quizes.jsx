@@ -4,7 +4,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button
 } from 'antd';
-
+import { path_server } from '../../../path.js';
 
 const Quizes = () => {
 
@@ -27,10 +27,11 @@ const Quizes = () => {
         description: 'Description for Quiz',
         params:'',
         creator_id: user.id
-      })
+      }),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/quiz/add', requestOptions)
+    fetch(path_server+'/quiz/add', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -51,13 +52,14 @@ const Quizes = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
 
-    fetch('http://192.168.2.134:3000/quiz', requestOptions)
+    fetch(path_server+'/quiz', requestOptions)
     .then((res) => {
       return res.json();
     })

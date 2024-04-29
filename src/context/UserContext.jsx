@@ -1,6 +1,7 @@
 import { createContext, useEffect, useContext, useState, useRef } from "react";
 //import { users } from "../data/data";
 //import { router } from "expo-router";
+import { path_server } from "../../path";
 
 export const UserContext = createContext();
 
@@ -17,10 +18,11 @@ export function UserProvider({ children }) {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userdata)
+      body: JSON.stringify(userdata),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/users/update', requestOptions)
+    fetch(path_server+'/users/update', requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -45,13 +47,14 @@ export function UserProvider({ children }) {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ login: login, password: password })
+      body: JSON.stringify({ login: login, password: password }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
   
-        fetch('http://192.168.2.134:3000/users/login', requestOptions)
+        fetch(path_server+'/users/login', requestOptions)
         .then((res) => {
           return res.json();
         })
@@ -118,6 +121,7 @@ export function UserProvider({ children }) {
 
     const options = {
       method: 'POST',
+      mode:'cors'
     }; 
 
     const response = fetch('https://prj-backend-mini-library.onrender.com/user/' + name, options)

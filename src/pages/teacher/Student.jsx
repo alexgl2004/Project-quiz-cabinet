@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useContext, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
+import { path_server } from '../../../path.js';
 
 import {
   Button,
@@ -52,12 +53,13 @@ const StudentC = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: user.id })
+      body: JSON.stringify({ id: user.id }),
+      mode:'cors'
     };        
 
 //    useEffect(() => {
 
-    fetch('http://192.168.2.134:3000/users/students/' + student_id, requestOptions)
+    fetch(path_server+'/users/students/' + student_id, requestOptions)
     .then((res) => {
       return res.json();
     })
@@ -79,10 +81,11 @@ const StudentC = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(stundentData)
+      body: JSON.stringify(stundentData),
+      mode:'cors'
     };
 
-    fetch('http://192.168.2.134:3000/users/students/'+params.id+'/edit', requestOptions)
+    fetch(path_server+'/users/students/'+params.id+'/edit', requestOptions)
     .then((res) => {
       return res.json();
     })
