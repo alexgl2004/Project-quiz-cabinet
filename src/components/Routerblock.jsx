@@ -3,6 +3,7 @@ import { Layout, Flex, Menu, Button } from 'antd';
 import { useState, useContext } from 'react';
 import { Navigate, Outlet, Link } from 'react-router-dom';
 import { UserContext } from "../context/UserContext.jsx";
+import { languagePack } from '../data/language.js';
 
 const { Content, Header, Footer } = Layout;
 
@@ -58,6 +59,8 @@ const footerStyle = {
 
 const Routerblock = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { logout, user } = useContext(UserContext);
 
   const [current, setCurrent] = useState('h');
@@ -85,40 +88,40 @@ const Routerblock = () => {
         <Header style={headerStyle}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal"  theme="light">
             <Menu.Item key="h" icon= {<HomeTwoTone />}>
-              <Link to="/">Home</Link>
+              <Link to="/">{languagePack[lang]['HOME']}</Link>
             </Menu.Item>
             <Menu.Item key="a" icon= {<InfoCircleOutlined />}>
-                  <Link to="/about">About</Link>
+                  <Link to="/about">{languagePack[lang]['ABOUT']}</Link>
             </Menu.Item>
             {user?
                 user.role==1?(
                   <>
                     <Menu.Item key="s" icon= {<InfoCircleOutlined />}>
-                      <Link to="/students">Students</Link>
+                      <Link to="/students">{languagePack[lang]['STUDENTS']}</Link>
                     </Menu.Item>
                     <Menu.Item key="r" icon= {<InfoCircleOutlined />}>
-                      <Link to="/rooms">Rooms</Link>
+                      <Link to="/rooms">{languagePack[lang]['ROOMS']}</Link>
                     </Menu.Item>
                     <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
-                      <Link to="/results">Results</Link>
+                      <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
                     </Menu.Item>
                   </>
                 ):user.role==2?(
                   <>
                     <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
-                      <Link to="/quiz">Quiz</Link>
+                      <Link to="/quiz">{languagePack[lang]['QUIZ']}</Link>
                     </Menu.Item>
                     <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
-                      <Link to="/questions">Questions</Link>
+                      <Link to="/questions">{languagePack[lang]['QUESTIONS']}</Link>
                     </Menu.Item>
                     <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
-                      <Link to="/stat">Statistic</Link>
+                      <Link to="/stat">{languagePack[lang]['STATISTIC']}</Link>
                     </Menu.Item>
                   </>
                 ):(
                   <>
                     <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
-                      <Link to="/results">Results</Link>
+                      <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
                     </Menu.Item>
                   </>
                 )
@@ -126,13 +129,13 @@ const Routerblock = () => {
             }
             <Menu.Item key="l" icon= {!user?<CheckCircleTwoTone />:<QqOutlined />}  style={{ marginLeft: 'auto' }}>
               {!user?
-                (<Link to="/login">Login</Link>):
-                (<Link to="/profile">Profile</Link>)
+                (<Link to="/login">{languagePack[lang]['LOGIN']}</Link>):
+                (<Link to="/profile">{languagePack[lang]['PROFILE']}</Link>)
               }
             </Menu.Item>
             {user &&
               <Menu.Item key="o" icon={<ApiOutlined />}>
-              Logout
+              {languagePack[lang]['LOGOUT']}
               </Menu.Item>
             }
           </Menu>
@@ -140,7 +143,7 @@ const Routerblock = () => {
         <Content style={contentStyle}>
           <Outlet/>
         </Content>
-        <Footer style={footerStyle}>Footer</Footer>
+        <Footer style={footerStyle}>{languagePack[lang]['FOOTER']}</Footer>
       </Layout>
     </Flex>
    

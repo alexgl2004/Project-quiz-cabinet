@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { languagePack } from '../data/language'
 
 const About = () => {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   return (
     <>
-      <h1>About</h1>
+      <h1>{languagePack[lang]['ABOUT']}</h1>
     </>
   )
 }

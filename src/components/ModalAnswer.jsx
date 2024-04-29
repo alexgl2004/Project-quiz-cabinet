@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Form, Input, Button, Modal, Space } from 'antd';
 import { path_server } from '../../path';
-
+import { languagePack } from '../data/language';
 const { TextArea } = Input;
 
 const ModalAnswer = (params) => {
 
 //  console.log(params)
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
 
   const [isModalOpen, setIsModalOpen] = useState([false, false]);
   const [tempNameDescription, setTempNameDescription] = useState(null);
@@ -45,7 +46,7 @@ const ModalAnswer = (params) => {
   }
 
   function delAnswer(answerId, questionId){
-    const test = confirm('Are you shure to delete?')
+    const test = confirm(languagePack[lang]['DELETE?'])
     if(test){
       const requestOptions = {
         method: 'POST',
@@ -110,7 +111,7 @@ const ModalAnswer = (params) => {
             })
           }
         }>
-          {params && parseInt(params.add)==1?'Add answer +':'Edit'}
+          {params && parseInt(params.add)==1?languagePack[lang]['ADD_ANSWER']:languagePack[lang]['EDIT']}
         </Button>
         {params && parseInt(params.add)!=1?
           <Button onClick={() =>{
@@ -124,7 +125,7 @@ const ModalAnswer = (params) => {
 
       </Space>
       <Modal
-        title={(params.add && parseInt(params.add)==1?'Add':'Edit')+' answer'}
+        title={(params.add && parseInt(params.add)==1?languagePack[lang]['ADD']:languagePack[lang]['EDIT'])+languagePack[lang]['ANSWER']}
         open={isModalOpen[0]}
         onOk={() => {
           toggleModal(0, false)
@@ -135,21 +136,21 @@ const ModalAnswer = (params) => {
 //          setTempNameDescription({})
         }}
       >
-        <Form.Item label="Text of answer">
+        <Form.Item label={languagePack[lang]['TEXT_OF_ANSWER']}>
           <Input 
             name="answer" 
             onChange={(e)=>{onChangeND(e,'answer')}} 
             value={tempNameDescription && tempNameDescription.answer?tempNameDescription.answer:''}
           />
         </Form.Item>
-        <Form.Item label="Comment">
+        <Form.Item label={languagePack[lang]['COMMENT']}>
           <TextArea rows={4} 
             name="comment" 
             onChange={(e)=>{onChangeND(e,'comment')}} 
             value={tempNameDescription && tempNameDescription.comment?tempNameDescription.comment:''}
           />
         </Form.Item>
-        <Checkbox value="1" checked={tempNameDescription && tempNameDescription.correct?true:false} onChange={(e)=>{onChangeND(e,'correct')}}>It is correct answer</Checkbox>
+        <Checkbox value="1" checked={tempNameDescription && tempNameDescription.correct?true:false} onChange={(e)=>{onChangeND(e,'correct')}}>{languagePack[lang]['IT_IS_CORRECT_ANSWER']}</Checkbox>
       </Modal>
     </>
   );

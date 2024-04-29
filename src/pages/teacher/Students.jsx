@@ -1,15 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button
 } from 'antd';
 import { path_server } from '../../../path.js';
-
+import { languagePack } from '../../data/language.js';
 
 const Students = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  if(user && user.role!=1){
+    navigate('/profile')
+  }
+
   const [students, setStudents] = useState(null);
   const [newStudentID, setnewStudentID] = useState(null);
 
@@ -81,9 +88,8 @@ const Students = () => {
 
   return (
     <>
-      {user && user.role!=1 && <Navigate replace to="/profile" />}
       {newStudentID?<><Navigate replace to={"/students/"+newStudentID} /></>:''}
-      <h1>Students</h1>
+      <h1>{languagePack[lang]['STUDENTS']}</h1>
       {students?students.map((student,index)=>{
         return (
           <div key={'student_'+index}style={{borderWidth:2,padding:10}}>
@@ -91,7 +97,7 @@ const Students = () => {
           </div>
         )
       }):''}
-      <Button onClick={addStudent}>Add new Student</Button>
+      <Button onClick={addStudent}>{languagePack[lang]['ADD_NEW_STUDENT']}</Button>
     </>
   )
 }

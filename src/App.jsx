@@ -25,7 +25,6 @@ import Statistic from './pages/manager/Statistic.jsx';
 
 import Routerblock from './components/Routerblock.jsx';
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Routerblock />}>
@@ -50,6 +49,12 @@ const router = createBrowserRouter(
 )
 
 function App({routers}) {
+
+  localStorage.setItem("lang","EN");
+  const lang = localStorage.getItem("lang");
+//  console.log(lang)
+
+  if(!lang) localStorage.setItem("lang","EN");
 
   return (
     <UserProvider>

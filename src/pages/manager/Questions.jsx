@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import ModalAnswer from "../../components/ModalAnswer.jsx";
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 import {
   Button,
@@ -13,10 +14,19 @@ import {
 
 const { TextArea } = Input;
 
-
 const Questions = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  if(user && user.role!=2){
+    navigate('/profile')
+  }      
+  
+
   const [questions, setQuestions] = useState(null);
 //  const [answers, setAnswers] = useState(null);  
 //  const [questionID, setQuestionID] = useState(null);
@@ -178,7 +188,7 @@ const Questions = () => {
   }
 
   function delQuestion(question_id){
-    const test = confirm('Are you shure to delete?')
+    const test = confirm(languagePack[lang]['DELETE?'])
     if(test){
       const requestOptions = {
         method: 'POST',
@@ -316,11 +326,10 @@ const Questions = () => {
 
   return (
     <>
-      {user && user.role!=2 && <Navigate replace to="/profile" />}
-      <h1>Questions</h1>      
+      <h1>{languagePack[lang]['QUESTIONS']}</h1>
       <div style={{display:'flex'}}>
         <div style={{width:'30%',overflowY:'auto',maxHeight:500}}>
-          <Button onClick={addQuestion}>Add new Question +</Button>
+          <Button onClick={addQuestion}>{languagePack[lang]['ADD_NEW_QUESTION']}</Button>
           <Form.Item style={{padding:5,margin:0,marginTop:5, borderStyle:'solid',borderWidth:1,borderColor:'#ccc',borderBottom:0}}>
             <Input 
               name="filter" 
@@ -345,7 +354,7 @@ const Questions = () => {
                     }
                     <div key={'question_'+index} style={{borderWidth:2,padding:2}}>
                       <Button style={{width:'80%',textAlign:'left'}} onClick={()=>{getAnswers(question.id)}}>{question.header}</Button>
-                      <Button style={{marginLeft:'2%',width:'18%',textAlign:'center'}} onClick={()=>{delQuestion(question.id)}}>Del</Button>
+                      <Button style={{marginLeft:'2%',width:'18%',textAlign:'center'}} onClick={()=>{delQuestion(question.id)}}>{languagePack[lang]['DELETE_BUTTON']}</Button>
                     </div>
                   </>
                 )
@@ -360,43 +369,43 @@ const Questions = () => {
               {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
                 <>
                   <h5>
-                    <em>Header: </em>{tempNameDescription.header?tempNameDescription.header:questions.nowQuestion.header}
+                    <em>{languagePack[lang]['HEADER']}: </em>{tempNameDescription.header?tempNameDescription.header:questions.nowQuestion.header}
                   </h5>
-                  <div className="theme_text" style={{margin:10}}><em>Theme: </em> {tempNameDescription.theme?tempNameDescription.theme:questions.nowQuestion.theme}</div>
-                  <div className="description" style={{margin:10}}><em>Text of question: </em>{tempNameDescription.text?tempNameDescription.text:questions.nowQuestion.text}</div>
-                  <div className="description" style={{margin:10}}><em>Text that is displayed, when answer is correct: </em>{tempNameDescription.text_right?tempNameDescription.text_right:questions.nowQuestion.text_right}</div>
-                  <div className="points" style={{margin:10}}><em>Max points for correct answer: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
+                  <div className="theme_text" style={{margin:10}}><em>{languagePack[lang]['THEME']}: </em> {tempNameDescription.theme?tempNameDescription.theme:questions.nowQuestion.theme}</div>
+                  <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_OF_QUESTION']}: </em>{tempNameDescription.text?tempNameDescription.text:questions.nowQuestion.text}</div>
+                  <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_CORRECT_ANSWER']}: </em>{tempNameDescription.text_right?tempNameDescription.text_right:questions.nowQuestion.text_right}</div>
+                  <div className="points" style={{margin:10}}><em>{languagePack[lang]['TEXT_POINTS_CORRECT_ANSWER']}: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
                 </>:
                 <>
-                  <Form.Item label="Header of question">
+                  <Form.Item label={languagePack[lang]['HEADER_OF_QUESTION']}>
                     <Input 
                       name="header" 
                       onChange={(e)=>{onChangeND(e,'header')}} 
                       value={tempNameDescription.header}
                     />
                   </Form.Item>
-                  <Form.Item label="Theme of question">
+                  <Form.Item label={languagePack[lang]['THEME_OF_QUESTION']}>
                     <Input 
                       name="theme" 
                       onChange={(e)=>{onChangeND(e,'theme')}} 
                       value={tempNameDescription.theme}
                     />
                   </Form.Item>
-                  <Form.Item label="Text of question">
+                  <Form.Item label={languagePack[lang]['TEXT_OF_QUESTION']}>
                     <TextArea rows={4} 
                       name="text" 
                       onChange={(e)=>{onChangeND(e,'text')}} 
                       value={tempNameDescription.text}
                     />
                   </Form.Item>
-                  <Form.Item label="Text that is displayed, when answer is correct">
+                  <Form.Item label={languagePack[lang]['TEXT_CORRECT_ANSWER']}>
                     <TextArea rows={4} 
                       name="text_right" 
                       onChange={(e)=>{onChangeND(e,'text_right')}} 
                       value={tempNameDescription.text_right}
                     />
                   </Form.Item>
-                  <Form.Item label="Max points for correct answer">
+                  <Form.Item label={languagePack[lang]['TEXT_MAX_POINTS_CORRECT_ANSWER']}>
                     <Input 
                       name="points" 
                       onChange={(e)=>{onChangeND(e,'points')}} 
@@ -407,11 +416,11 @@ const Questions = () => {
               }
               {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
                 <>
-                  <Button onClick={openEdit}>Edit header and text</Button>
+                  <Button onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
                 </>:
                 <>
-                  <Button onClick={saveEdit}>Save</Button>
-                  <Button onClick={cancelEdit}>Cancel</Button>
+                  <Button onClick={saveEdit}>{languagePack[lang]['SAVE']}</Button>
+                  <Button onClick={cancelEdit}>{languagePack[lang]['CANCEL']}</Button>
                 </>
               }
             </div>
@@ -421,14 +430,14 @@ const Questions = () => {
           <div style={{borderLeft:'1px solid #ccc',width:'40%',padding:10,overflowY:'auto',maxHeight:500}}>
             {questions && questions.nowAnswers?
               <>
-                <h5>Answers of question</h5>
+                <h5>{languagePack[lang]['ANSWERS OF QUIESTION']}</h5>
                 <ModalAnswer getAnswers={getAnswers} add="1" questionId={questions.questionID} />
                 {questions.nowAnswers.map((answer,index)=>{
                   return (
                     <div key={'answers_'+index} style={{position:"relative",border:'1px solid #ccc',padding:10,marginTop:5,minHeight:50}}>
-                      <div><em>Correct: </em>{answer.correct?'Yes':'No'}</div>
-                      <div style={{marginTop:5}}><em>Answer: </em>{answer.answer}</div>
-                      <div style={{marginTop:5}}><em>Comment: </em>{answer.comment}</div>
+                      <div><em>{languagePack[lang]['CORRECT']}: </em>{answer.correct?languagePack[lang]['YES']:languagePack[lang]['NO']}</div>
+                      <div style={{marginTop:5}}><em>{languagePack[lang]['ANSWER']}: </em>{answer.answer}</div>
+                      <div style={{marginTop:5}}><em>{languagePack[lang]['COMMENT']}: </em>{answer.comment}</div>
                       <div style={{position:"absolute",top:10,right:10}}>
                         <ModalAnswer getAnswers={getAnswers} answerContent={answer} questionId={questions.questionID} answerId={answer.id} />
                       </div>
@@ -437,7 +446,7 @@ const Questions = () => {
                   })
                 }
               </>
-            :tempNameDescription && tempNameDescription.edit==1?'Adding new question':'Select question in left side'
+            :tempNameDescription && tempNameDescription.edit==1?languagePack[lang]['ADD_NEW_QUESTION']:languagePack[lang]['SELECT_QUESTION_IN_LEFT_SIDE']
             }
           </div>
         </div>

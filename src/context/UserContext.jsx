@@ -6,6 +6,8 @@ import { path_server } from "../../path";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
   
   // user: null if not logged in
   // { name: string, lastLogin: Date }
@@ -116,39 +118,6 @@ export function UserProvider({ children }) {
 
   }
 
-
-  function login_from_DATA(name, password) { //change name to login when backend will come:)
-
-    const options = {
-      method: 'POST',
-      mode:'cors'
-    }; 
-
-    const response = fetch('https://prj-backend-mini-library.onrender.com/user/' + name, options)
-    .then(response => response.json())
-    .then(data => { 
-      console.log('test',data)
-//     console.log(data.name,name,'&&',data.password,password)
-      if( data.name && (data.name.toUpperCase()==name.toUpperCase() || data.email.toUpperCase()==name) && data.password == password){
-        setUser(
-          {
-            name: data.name,
-            email: data.email,
-            userid: data.id,
-          }
-        );
-        
-//        setOrderGET(data.id, data.books)
-
-        router.push('');
-      }else{
-        alert('Wrong Email or Password!')
-      }
-    })
-    .catch(error => console.error(error));
-
-  }
-
   function logout() {
     setUser(null);
     setMsg('');
@@ -162,7 +131,7 @@ export function UserProvider({ children }) {
         login,
         logout,
         userMsg,
-        changeUserData
+        changeUserData,
       }}
     >
       {children}

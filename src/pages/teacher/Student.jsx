@@ -1,26 +1,20 @@
 import dayjs from 'dayjs';
 import React, { useEffect, useRef, useContext, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
 import { path_server } from '../../../path.js';
 
 import {
   Button,
-  Cascader,
-  Checkbox,
-  ColorPicker,
   DatePicker,
   Form,
   Input,
-  InputNumber,
   Radio,
-  Select,
-  Slider,
-  Switch,
-  TreeSelect,
   Upload,
 } from 'antd';
+import { languagePack } from '../../data/language.js';
+
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
@@ -31,9 +25,17 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
+
 const StudentC = () => {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
   
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  if(!user){
+    navigate('/login')
+  }
+  
   const student = useRef({});
   let params = useParams();
   let userMsg_all = '';
@@ -41,7 +43,7 @@ const StudentC = () => {
   const [student_temp, setUsertem] = useState(null);
 
   useEffect(() => {
-    if(student_temp==null){
+    if(user && student_temp==null){
       getStudent(params.id) 
     }
   })  
@@ -117,7 +119,9 @@ const StudentC = () => {
 
   const changeUser = () => {
     changeStundentData(student_temp);
-    student.current = student_temp
+    student.current = student_temp;
+    navigate('/students')
+
   }
 
 //  const [value, setValue] = useState(student_temp.title);  
@@ -185,14 +189,13 @@ const StudentC = () => {
         }
       });
    }
- 
+
   return (
     <>
-      {!user && <Navigate replace to="/login" />}
       {student_temp!=null?<>
         <h1>
-          Profile of {student_temp?student_temp.role==1?'teacher':student_temp.role==2?'manager':'student':''}: {student_temp.name} {student_temp.surname}
-          <Link style={{fontSize:12,float:'right'}} to='/students'>Back to students</Link>
+          {languagePack[lang]['PROFILE_OF']} {student_temp?student_temp.role==1?languagePack[lang]['TEACHER']:student_temp.role==2?languagePack[lang]['MANAGER']:languagePack[lang]['STUDENT']:''}: {student_temp.name} {student_temp.surname}
+          <Link style={{fontSize:12,float:'right'}} to='/students'>{languagePack[lang]['BACK_TO_STUDENTS']}</Link>
         </h1>
         
         <Form
@@ -208,25 +211,25 @@ const StudentC = () => {
             maxWidth: 600,
           }}
         >
-          <Form.Item label="Login">
+          <Form.Item label={languagePack[lang]['LOGIN']}>
             <b>{student_temp.login}</b>
           </Form.Item>
-          <Form.Item label="Title">
+          <Form.Item label={languagePack[lang]['TITLE']}>
             <Radio.Group 
               name="title" 
               onChange={(e)=>{onChange(e,'title')}} 
               value={student_temp.title}
             >
-              <Radio value={"Mr"}>Mr</Radio>
-              <Radio value={"Ms"}>Ms</Radio>
+              <Radio value={"Mr"}>{languagePack[lang]['MR']}</Radio>
+              <Radio value={"Ms"}>{languagePack[lang]['MS']}</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item 
-            label="Name" 
+            label={languagePack[lang]['NAME']} 
             rules={[
               {
                 required: true,
-                message: 'Please input your name!',
+                message: languagePack[lang]['ENTER_NAME'],
               },
             ]}
           >
@@ -237,11 +240,11 @@ const StudentC = () => {
             />
           </Form.Item>
           <Form.Item 
-            label="Surname" 
+            label={languagePack[lang]['SURNAME']} 
             rules={[
               {
                 required: true,
-                message: 'Please input your surname!',
+                message: languagePack[lang]['ENTER_SURNAME'],
               },
             ]}
           >
@@ -251,22 +254,14 @@ const StudentC = () => {
               value={student_temp.surname} 
             />
           </Form.Item>
-          <Form.Item 
-            label="School" 
-            rules={[
-              {
-                required: true,
-                message: 'Please input your school!',
-              },
-            ]}
-          >
+          <Form.Item label={languagePack[lang]['SCHOOL']}>
             <Input 
               name="school" 
               onChange={(e)=>{onChange(e,'school')}} 
               value={student_temp.school} 
             />
           </Form.Item>
-          <Form.Item label="Birthday">
+          <Form.Item label={languagePack[lang]['BIRTHDAY']}>
             <DatePicker 
               name="birthday" 
               onChange={onChangeDatePicker} 
@@ -274,47 +269,27 @@ const StudentC = () => {
               defaultValue={student_temp.birthday?dayjs(student_temp.birthday, dateFormat):''}
             />
           </Form.Item>
-          <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-            <Upload action="/upload.do" listType="picture-card">
-              <button
-                style={{
-                  border: 0,
-                  background: 'none',
-                }}
-                type="button"
-              >
-                <PlusOutlined />
-                <div
-                  style={{
-                    marginTop: 8,
-                  }}
-                >
-                  Upload
-                </div>
-              </button>
-            </Upload>
-          </Form.Item>
           <Form.Item 
-            label="email" 
+            label={languagePack[lang]['EMAIL']} 
             rules={[
               {
                 required: false,
-                message: 'Please input your school!',
+                message: languagePack[lang]['ENTER_EMAIL'],
               },
             ]}
           >
             <Input 
-              name="email" 
+              name="email"
               onChange={(e)=>{onChange(e,'email')}} 
               value={student_temp.email}
             />
           </Form.Item>
           <Form.Item 
-            label="password" 
+            label={languagePack[lang]['PASSWORD']}
             rules={[
               {
                 required: true,
-                message: 'Please input your school!',
+                message: languagePack[lang]['ENTER_PASSWORD'],
               },
             ]}
           >
@@ -328,7 +303,7 @@ const StudentC = () => {
             <Button onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
           </Form.Item>
           <Form.Item>
-            <Button onClick={undoChangeUser}>Cancel</Button>
+            <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
           </Form.Item>
         </Form>
         <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>

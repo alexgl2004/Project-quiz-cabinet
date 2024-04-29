@@ -1,25 +1,19 @@
 import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
+import { languagePack } from '../../data/language.js';
 
 import {
   Button,
-  Cascader,
-  Checkbox,
-  ColorPicker,
   DatePicker,
   Form,
   Input,
-  InputNumber,
   Radio,
-  Select,
-  Slider,
-  Switch,
-  TreeSelect,
   Upload,
 } from 'antd';
+
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
@@ -31,8 +25,16 @@ const normFile = (e) => {
 };
 
 const Profile = () => {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
   
   const { changeUserData, user, userMsg } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  if(!user){
+    navigate('/login')
+  }
 
   let userMsg_all = userMsg;
 
@@ -114,9 +116,8 @@ const Profile = () => {
 
   return (
     <>
-      {!user && <Navigate replace to="/login" />}
 
-      <h1>Profile: {user?user.role==1?'teacher':user.role==2?'manager':'student':''}</h1>
+      <h1>{languagePack[lang]['PROFILE_OF']} {user?user.role==1?languagePack[lang]['TEACHER']:user.role==2?languagePack[lang]['MANAGER']:languagePack[lang]['STUDENT']:''}</h1>
       
       <Form
         labelCol={{
@@ -131,25 +132,25 @@ const Profile = () => {
           maxWidth: 600,
         }}
       >
-        <Form.Item label="Login">
+        <Form.Item label={languagePack[lang]['LOGIN']}>
           <b>{user_temp.login}</b>
         </Form.Item>
-        <Form.Item label="Title">
+        <Form.Item label={languagePack[lang]['TITLE']}>
           <Radio.Group 
             name="title" 
             onChange={(e)=>{onChange(e,'title')}} 
             value={user_temp.title}
           >
-            <Radio value={"Mr"}>Mr</Radio>
-            <Radio value={"Ms"}>Ms</Radio>
+            <Radio value={"Mr"}>{languagePack[lang]['MR']}</Radio>
+            <Radio value={"Ms"}>{languagePack[lang]['MS']}</Radio>
           </Radio.Group>
         </Form.Item>
         <Form.Item 
-          label="Name" 
+          label={languagePack[lang]['NAME']} 
           rules={[
             {
               required: true,
-              message: 'Please input your name!',
+              message: languagePack[lang]['ENTER_NAME'],
             },
           ]}
         >
@@ -160,11 +161,11 @@ const Profile = () => {
           />
         </Form.Item>
         <Form.Item 
-          label="Surname" 
+          label={languagePack[lang]['SURNAME']}
           rules={[
             {
               required: true,
-              message: 'Please input your surname!',
+              message: languagePack[lang]['ENTER_SURNAME'],
             },
           ]}
         >
@@ -175,13 +176,7 @@ const Profile = () => {
           />
         </Form.Item>
         <Form.Item 
-          label="School" 
-          rules={[
-            {
-              required: true,
-              message: 'Please input your school!',
-            },
-          ]}
+          label={languagePack[lang]['SCHOOL']} 
         >
           <Input 
             name="school" 
@@ -189,7 +184,7 @@ const Profile = () => {
             value={user_temp.school} 
           />
         </Form.Item>
-        <Form.Item label="Birthday">
+        <Form.Item label={languagePack[lang]['BIRTHDAY']}>
           <DatePicker 
             name="birthday" 
             onChange={onChangeDatePicker} 
@@ -197,32 +192,12 @@ const Profile = () => {
             defaultValue={user_temp.birthday?dayjs(user_temp.birthday, dateFormat):''}
           />
         </Form.Item>
-        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <button
-              style={{
-                border: 0,
-                background: 'none',
-              }}
-              type="button"
-            >
-              <PlusOutlined />
-              <div
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                Upload
-              </div>
-            </button>
-          </Upload>
-        </Form.Item>
         <Form.Item 
-          label="email" 
+          label={languagePack[lang]['EMAIL']}
           rules={[
             {
               required: false,
-              message: 'Please input your school!',
+              message: languagePack[lang]['ENTER_EMAIL'],
             },
           ]}
         >
@@ -233,11 +208,11 @@ const Profile = () => {
           />
         </Form.Item>
         <Form.Item 
-          label="password" 
+          label={languagePack[lang]['PASSWORD']}
           rules={[
             {
               required: true,
-              message: 'Please input your school!',
+              message: languagePack[lang]['ENTER_PASSWORD'],
             },
           ]}
         >
@@ -248,10 +223,10 @@ const Profile = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+          <Button onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
         </Form.Item>
         <Form.Item>
-          <Button onClick={undoChangeUser}>Cancel</Button>
+          <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
         </Form.Item>
       </Form>
       <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>

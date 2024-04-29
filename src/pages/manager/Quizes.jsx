@@ -1,16 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button
 } from 'antd';
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 const Quizes = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   const [quizes, setQuizes] = useState(null);
   const [newQuizID, setnewQuizID] = useState(null);
+
+
+  if(user && user.role!=2){
+    navigate('/profile')
+  }
+
+  if(newQuizID){
+    navigate("/quiz/"+newQuizID)
+  }    
+
 //  const { rooms, getRooms } = useContext(TeacherContext);
 
   useEffect(() => {
@@ -88,9 +104,7 @@ const Quizes = () => {
 
   return (
     <>
-      {user && user.role!=2 && <Navigate replace to="/profile" />}
-      {newQuizID?<><Navigate replace to={"/quiz/"+newQuizID} /></>:''}
-      <h1>Quizzes</h1>
+      <h1>{languagePack[lang]['QUIZZES']}</h1>
       {quizes?quizes.map((quiz,index)=>{
         return (
           <div key={'quiz_'+index} style={{borderWidth:2,padding:10}}>
@@ -98,7 +112,7 @@ const Quizes = () => {
           </div>
         )
       }):''}
-      <Button onClick={addQuiz}>Add new Quiz</Button>
+      <Button onClick={addQuiz}>{languagePack[lang]['ADD_NEW_QUIZ']}</Button>
     </>
   )
 }

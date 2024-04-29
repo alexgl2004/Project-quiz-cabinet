@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useRef, useState, useContext, useEffect } from 'react'
-import { Navigate, Outlet, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button,
@@ -9,11 +9,22 @@ import {
   Input
 } from 'antd';
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 const { TextArea } = Input;
 //[+] добавить возможность фиксации для уже взятых в работу тестов и вопросов, а так же добавить возможность разблокирования(!)
 const Quiz = () => {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  if(user && user.role!=2){
+    navigate('/profile')
+  }
+
 //  const { quiz, getQuiz, setQuiz } = useContext(TeacherContext);
 
   const [ quizQuestions, setquizQuestions ] = useState(null);
@@ -277,26 +288,25 @@ const Quiz = () => {
 
   return (
     <>
-      {user && user.role!=2 && <Navigate replace to="/profile" />}
       {quiz?(<>
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
             <h1>
-              quiz: {quiz.quiz.name}
-              <Link style={{fontSize:12,float:'right'}} to='/quiz'>Back to the quizzes</Link>
+            {languagePack[lang]['QUIZ']}: {quiz.quiz.name}
+              <Link style={{fontSize:12,float:'right'}} to='/quiz'>{languagePack[lang]['BACK_TO_QUIZZES']}</Link>
             </h1>
             
             <div className="description" style={{margin:20}}>{quiz.quiz.description}</div>
           </>:
           <>
-            <Form.Item label="Name">
+            <Form.Item label={languagePack[lang]['NAME']}>
               <Input 
                 name="name" 
                 onChange={(e)=>{onChangeND(e,'name')}} 
                 value={tempNameDescription.name?tempNameDescription.name:quiz.quiz.name} 
               />
             </Form.Item>
-            <Form.Item label="Description">
+            <Form.Item label={languagePack[lang]['DESCRIPTION']}>
               <TextArea rows={4} 
                 name="description" 
                 onChange={(e)=>{onChangeND(e,'description')}} 
@@ -309,32 +319,38 @@ const Quiz = () => {
 
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
-            <Button onClick={openEdit}>Edit header and text</Button>
+            <Button onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
           </>:
           <>
-            <Button onClick={saveEdit}>Save</Button>
-            <Button onClick={cancelEdit}>Cancel</Button>
+            <Button onClick={saveEdit}>{languagePack[lang]['SAVE']}</Button>
+            <Button onClick={cancelEdit}>{languagePack[lang]['CANCEL']}</Button>
           </>
         }
         <hr />
         <div>
+          <div className="button_Block" style={{marginTop:20,width:'100%'}}>
+            <Form layout="horizontal" style={{maxWidth: 1000}}>
+              <Button onClick={()=>{saveQuiz()}} disabled={!contentChanged.current}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
+              <Button onClick={()=>{setQuiz(null)}}>{languagePack[lang]['RESET']}</Button>
+            </Form>
+          </div>
           <div className="quiz_block" style={{width:'100%',display:'flex'}}>
             <div style={{width:'60%'}}>
-              <h4>Questions in the quiz: </h4>
+              <h4>{languagePack[lang]['QUESTION_IN_THE_QUIZ']}: </h4>
               <div className="quiz_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
               {quizQuestions && quizQuestions.InQuiz.length>0?quizQuestions.InQuiz.map((question,index)=>{
                   return (
                     <div key={'student_'+question.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50,minWidth:150}}>
                       <div style={{width:'75%'}}>{question.header}</div>
-                        <div><Button onClick={()=>{outInMoveQuizquiz(question.id,'out')}}>Remove</Button></div>
+                        <div><Button onClick={()=>{outInMoveQuizquiz(question.id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>
                     </div>
                   )
-                }):<div>Click "Take in" for add quiz to quiz</div>}
+                }):<div>{languagePack[lang]['CLICK_TAKE_IN_QUIZ']}</div>}
               </div>
             </div>
             <div style={{width:'40%'}}>
-              <h4>Question pool:</h4>
-              <Form.Item label="Filter:" style={{padding:5,margin:0,borderStyle:'solid',borderWidth:1,borderColor:'grey',borderBottom:0}}>
+              <h4>{languagePack[lang]['QUESTION_POOL']}:</h4>
+              <Form.Item label={languagePack[lang]['FILTER']+':'} style={{padding:5,margin:0,borderStyle:'solid',borderWidth:1,borderColor:'grey',borderBottom:0}}>
                 <Input 
                   name="filter" 
                   onChange={(e)=>{onChangeND(e,'filter')}}
@@ -346,19 +362,13 @@ const Quiz = () => {
                   return (
                     <div key={'student_'+question.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'100%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50,minWidth:150}}>
                       <div style={{width:'75%'}}>{question.header}</div>
-                        <div><Button onClick={()=>{outInMoveQuizquiz(question.id,'in')}}>Add</Button></div>
+                        <div><Button onClick={()=>{outInMoveQuizquiz(question.id,'in')}}>{languagePack[lang]['ADD']}</Button></div>
                     </div>
                   )
-                }):<div>All in work! Click "Take out" for remove quiz from quiz</div>}
+                }):<div>{languagePack[lang]['ALL_IN_WORK_QUIZ']}</div>}
               </div>
             </div>
           </div>          
-        </div>
-        <div className="button_Block" style={{marginTop:20,width:'100%'}}>
-          <Form layout="horizontal" style={{maxWidth: 1000}}>
-            <Button onClick={()=>{saveQuiz()}} disabled={!contentChanged.current}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
-            <Button onClick={()=>{setQuiz(null)}}>RESET</Button>
-          </Form>
         </div>
       </>):
       ''}

@@ -1,14 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import StudentResults from "../../components/StudentResults.jsx";
-import QRCode from "react-qr-code";
-import { Button, Modal, Space } from 'antd';
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 const Results = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  if(user!=null && user.role==2){
+    navigate('/profile')
+  }      
+
   const [studentsMass, setStudents] = useState(null);
 
   useEffect(() => {
@@ -48,8 +56,7 @@ const Results = () => {
 
   return (
     <>
-      {user!=null && user.role==2 && <Navigate replace to="/profile" />}
-      <h1>Results</h1>
+      <h1>{languagePack[lang]['RESULTS']}</h1>
       {user!=null && user.role==3?
         <StudentResults oneUser={true} userId={user.id} />:''
       }

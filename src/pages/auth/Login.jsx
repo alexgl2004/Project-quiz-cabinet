@@ -4,8 +4,11 @@ import { Button, Checkbox, Form, Input } from 'antd';
 //import { Redirect } from 'react-router';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
+import { languagePack } from '../../data/language.js';
 
 const Login = () => {
+
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
 
   const { logout, login, user, userMsg } = useContext(UserContext);
 
@@ -32,7 +35,7 @@ const Login = () => {
   return (
     <>
       {user && <Navigate replace to="/profile" />}
-      <h1>Login</h1>
+      <h1>{languagePack[lang]['LOGIN']}</h1>
       <div className='form-Login'>
         <div className='form-Login-In'>
         <Form
@@ -54,12 +57,12 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Username"
+            label={languagePack[lang]['USERNAME']}
             name="username"
             rules={[
               {
                 required: true,
-                message: 'Please input your username!',
+                message: languagePack[lang]['ENTER_USERNAME']
               },
             ]}
           >
@@ -67,12 +70,12 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={languagePack[lang]['PASSWORD']}
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Please input your password!',
+                message: languagePack[lang]['ENTER_PASSWORD'],
               },
             ]}
           >
@@ -86,7 +89,7 @@ const Login = () => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Submit
+              {languagePack[lang]['SUBMIT']}
             </Button>
           </Form.Item>
         </Form>

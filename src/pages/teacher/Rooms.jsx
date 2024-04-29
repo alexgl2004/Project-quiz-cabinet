@@ -1,17 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button
 } from 'antd';
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 
 const Rooms = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [rooms, setRooms] = useState(null);
   const [newRoomID, setnewRoomID] = useState(null);
+
+  if(user && user.role!=1){
+    navigate('/profile')
+  }  
+
+  if(user && newRoomID){
+    navigate("/rooms/"+newRoomID)
+  }  
+  
+  
+
 //  const { rooms, getRooms } = useContext(TeacherContext);
 
   useEffect(() => {
@@ -86,9 +102,7 @@ const Rooms = () => {
 
   return (
     <>
-      {user && user.role!=1 && <Navigate replace to="/profile" />}
-      {user && newRoomID?<><Navigate replace to={"/rooms/"+newRoomID} /></>:''}
-      <h1>Rooms</h1>
+      <h1>{languagePack[lang]['ROOMS']}</h1>
       {user && rooms?rooms.map((room,index)=>{
         return (
           <div key={'room_'+index} style={{borderWidth:2,padding:10}}>
@@ -96,7 +110,7 @@ const Rooms = () => {
           </div>
         )
       }):''}
-      <Button onClick={addRoom}>Add new Room</Button>
+      <Button onClick={addRoom}>{languagePack[lang]['ADD_NEW_ROOM']}</Button>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useRef, useState, useContext, useEffect } from 'react'
-import { Navigate, Outlet, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { TeacherContext } from "../../context/TeacherContext.jsx";
 import {
@@ -11,6 +11,7 @@ import {
   Checkbox
 } from 'antd';
 import { path_server } from '../../../path.js';
+import { languagePack } from '../../data/language.js';
 
 const { TextArea } = Input;
 
@@ -19,7 +20,15 @@ const { TextArea } = Input;
 
 const Room = () => {
 
+  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  if(user && user.role!=1){
+    navigate('/profile')
+  }    
+
 //  const { room, getRoom, setRoom } = useContext(TeacherContext);
 
   const [ studentsRoom, setStudentsRoom ] = useState(null);
@@ -307,26 +316,25 @@ const Room = () => {
 
   return (
     <>
-      {user && user.role!=1 && <Navigate replace to="/profile" />}
       {room?(<>
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
             <h1>
-              Room: {room.room.name}
-              <Link style={{fontSize:12,float:'right'}} to='/rooms'>Back to the Rooms</Link>
+              {languagePack[lang]['ROOM']}: {room.room.name}
+              <Link style={{fontSize:12,float:'right'}} to='/rooms'>{languagePack[lang]['BACK_TO_ROOMS']}</Link>
             </h1>
             
             <div className="description" style={{margin:20}}>{room.room.description}</div>
           </>:
           <>
-            <Form.Item label="Name">
+            <Form.Item label={languagePack[lang]['NAME']}>
               <Input 
                 name="name" 
                 onChange={(e)=>{onChangeND(e,'name')}} 
                 value={tempNameDescription.name}
               />
             </Form.Item>
-            <Form.Item label="Description">
+            <Form.Item label={languagePack[lang]['DESCRIPTION']}>
               <TextArea rows={4} 
                 name="description" 
                 onChange={(e)=>{onChangeND(e,'description')}} 
@@ -339,7 +347,7 @@ const Room = () => {
 
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
-            <Button onClick={openEdit}>Edit header and text</Button>
+            <Button onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
           </>:
           <>
             <Button onClick={saveEdit}>Save</Button>
@@ -352,7 +360,7 @@ const Room = () => {
             <div className="Start-block">
               <div style={{display:"flex",marginTop:10,width:'100%'}}>
                 <div style={{width:'25%'}}>
-                  <Form.Item label="Start from">
+                  <Form.Item label={languagePack[lang]['START_FROM']}>
                     <DatePicker 
                       name="start" 
                       onChange={onChangeStartDatePicker}
@@ -363,7 +371,7 @@ const Room = () => {
                   </Form.Item>
                 </div>
                 <div style={{width:'25%'}}>
-                  <Form.Item label="to">
+                  <Form.Item label={languagePack[lang]['TO']}>
                     <DatePicker 
                       name="end" 
                       onChange={onChangeEndDatePicker}
@@ -374,20 +382,20 @@ const Room = () => {
                   </Form.Item>
                 </div>
                 <div style={{width:'25%'}}>
-                  <Checkbox value="1" checked={room.room.show_results && room.room.show_results?true:false} onChange={(e)=>{onChangeND(e,'show_results')}} disabled={room.room.isRunning}>Show results to students</Checkbox>
+                  <Checkbox value="1" checked={room.room.show_results && room.room.show_results?true:false} onChange={(e)=>{onChangeND(e,'show_results')}} disabled={room.room.isRunning}>{languagePack[lang]['SHOW_RESULTS_STUDENTS']}</Checkbox>
                 </div>
                 <div style={{}}>
                   {!room.room.isRunning?(
-                    <Button onClick={saveAndStartRoom} disabled={quizesRoom && quizesRoom.inRoom && quizesRoom.inRoom.length>0 && studentsRoom && studentsRoom.inRoom && studentsRoom.inRoom.length>0?false:true}>Save and start</Button>
+                    <Button onClick={saveAndStartRoom} disabled={quizesRoom && quizesRoom.inRoom && quizesRoom.inRoom.length>0 && studentsRoom && studentsRoom.inRoom && studentsRoom.inRoom.length>0?false:true}>{languagePack[lang]['SAVE_AND_START']}</Button>
                   ):''}
                   {room.room.isRunning?(
-                    <Button onClick={saveAndStopRoom}>Stop</Button>
+                    <Button onClick={saveAndStopRoom}>{languagePack[lang]['STOP']}</Button>
                   ):''}
                 </div>
               </div>
             </div>
-            <Button onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
-            <Button onClick={()=>{setRoom(null)}} disabled={room.room.isRunning}>RESET</Button>
+            <Button onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
+            <Button onClick={()=>{setRoom(null)}} disabled={room.room.isRunning}>{languagePack[lang]['RESET']}</Button>
           </Form>
         </div>
         <hr />
@@ -395,74 +403,74 @@ const Room = () => {
             <div className="students_block" style={{width:"50%"}}>
               {!room.room.isRunning?
                 <div>
-                  <h4>Students available:</h4>
+                  <h4>{languagePack[lang]['STUDENTS_AVAILABLE']}:</h4>
                   <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
                     {studentsRoom && studentsRoom.outRoom.length>0?studentsRoom.outRoom.map((student,index)=>{
                       return (
                         <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
                           <div style={{width:'75%'}}>{student.name} {student.surname}</div>
                           {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>Add</Button></div>:
+                            <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>{languagePack[lang]['ADD']}</Button></div>:
                             ''
                           }
                         </div>
                       )
-                    }):<div>All in work! Click "Take out" for remove student from room</div>}
+                    }):<div>{languagePack[lang]['ALL_IN_WORK_ROOM']}</div>}
                   </div>
                 </div>:''
               }
               <div>
-                <h4>Students participating:</h4>
+                <h4>{languagePack[lang]['STUDENTS_PARTICIPTING']}:</h4>
                 <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
                 {studentsRoom && studentsRoom.inRoom.length>0?studentsRoom.inRoom.map((student,index)=>{
                     return (
                       <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
                         <div style={{width:'75%'}}>{student.name} {student.surname}</div>
                         {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>Remove</Button></div>:
+                          <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>:
                           ''
                         }
                       </div>
                     )
-                  }):<div>Click "Take in" for add student to room</div>}
+                  }):<div>{languagePack[lang]['CLICK_TAKE_IN_ROOM']}</div>}
                 </div>
               </div>
             </div>
             <div className="quiz_block" style={{width:'50%'}}>
               {!room.room.isRunning?
                 <div>
-                  <h4>Qizzes available: </h4>
+                  <h4>{languagePack[lang]['QUIZZES_AVAILABLE']}: </h4>
                   <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
                     {quizesRoom && quizesRoom.outRoom.length>0?quizesRoom.outRoom.map((quiz,index)=>{
                       return (
                         <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
                           <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
                           {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>Add</Button></div>
+                            <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>{languagePack[lang]['ADD']}</Button></div>
                             :
                             ''
                           }
                         </div>
                       )
-                    }):<div>All in work! Click "Take out" for remove quiz from room</div>}
+                    }):<div>{languagePack[lang]['ALL_IN_WORK_QUIZ_ROOM']}</div>}
                   </div>
                 </div>:''
               }
               <div>
-                <h4>Qizzes accepted:</h4>
+                <h4>{languagePack[lang]['QUIZZES_ACCEPTED']}:</h4>
                 <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
                 {quizesRoom && quizesRoom.inRoom.length>0?quizesRoom.inRoom.map((quiz,index)=>{
                     return (
                       <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
                         <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
                         {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>Remove</Button></div>
+                          <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>
                           :
                           ''
                         }
                       </div>
                     )
-                  }):<div>Click "Take in" for add quiz to room</div>}
+                  }):<div>{languagePack[lang]['CLICK_TAKE_IN_QUIZ_TO_ROOM']}</div>}
                 </div>
               </div>
             </div>
