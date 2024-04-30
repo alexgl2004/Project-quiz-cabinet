@@ -12,6 +12,8 @@ import {
 } from 'antd';
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
+import './css/rooms.css';
 
 const { TextArea } = Input;
 
@@ -20,14 +22,10 @@ const { TextArea } = Input;
 
 const Room = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-
-  if(user && user.role!=1){
-    navigate('/profile')
-  }    
 
 //  const { room, getRoom, setRoom } = useContext(TeacherContext);
 
@@ -42,11 +40,21 @@ const Room = () => {
   
   let params = useParams();
 
+  if(user && user.role!=1){
+    navigate('/profile')
+  }
+
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }
+
     if(room==null){
       getRoom(params.id) 
     }
-  })
+
+  }, [user]);
 
   useEffect(() => {
     if(room!=null){
@@ -350,7 +358,7 @@ const Room = () => {
             <Button onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
           </>:
           <>
-            <Button onClick={saveEdit}>Save</Button>
+            <Button type="primary" onClick={saveEdit}>Save</Button>
             <Button onClick={cancelEdit}>Cancel</Button>
           </>
         }
@@ -386,7 +394,7 @@ const Room = () => {
                 </div>
                 <div style={{}}>
                   {!room.room.isRunning?(
-                    <Button onClick={saveAndStartRoom} disabled={quizesRoom && quizesRoom.inRoom && quizesRoom.inRoom.length>0 && studentsRoom && studentsRoom.inRoom && studentsRoom.inRoom.length>0?false:true}>{languagePack[lang]['SAVE_AND_START']}</Button>
+                    <Button type="primary" onClick={saveAndStartRoom} disabled={quizesRoom && quizesRoom.inRoom && quizesRoom.inRoom.length>0 && studentsRoom && studentsRoom.inRoom && studentsRoom.inRoom.length>0?false:true}>{languagePack[lang]['SAVE_AND_START']}</Button>
                   ):''}
                   {room.room.isRunning?(
                     <Button onClick={saveAndStopRoom}>{languagePack[lang]['STOP']}</Button>
@@ -394,7 +402,7 @@ const Room = () => {
                 </div>
               </div>
             </div>
-            <Button onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
+            <Button type="primary" onClick={()=>{saveRoom(room.room.isRunning)}} disabled={room.room.isRunning || !contentChanged.current}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
             <Button onClick={()=>{setRoom(null)}} disabled={room.room.isRunning}>{languagePack[lang]['RESET']}</Button>
           </Form>
         </div>
@@ -403,14 +411,14 @@ const Room = () => {
             <div className="students_block" style={{width:"50%"}}>
               {!room.room.isRunning?
                 <div>
-                  <h4>{languagePack[lang]['STUDENTS_AVAILABLE']}:</h4>
+                  <h4 className='h4-left'>{languagePack[lang]['STUDENTS_AVAILABLE']}:</h4>
                   <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
                     {studentsRoom && studentsRoom.outRoom.length>0?studentsRoom.outRoom.map((student,index)=>{
                       return (
-                        <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                        <div key={'student_'+student.user_id} className="small-block-out">
                           <div style={{width:'75%'}}>{student.name} {student.surname}</div>
                           {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>{languagePack[lang]['ADD']}</Button></div>:
+                            <div><Button type="primary" onClick={()=>{outInMoveStudentRoom(student.user_id,'in')}}>{languagePack[lang]['ADD']}</Button></div>:
                             ''
                           }
                         </div>
@@ -420,14 +428,14 @@ const Room = () => {
                 </div>:''
               }
               <div>
-                <h4>{languagePack[lang]['STUDENTS_PARTICIPTING']}:</h4>
-                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
+                <h4 className='h4-left'>{languagePack[lang]['STUDENTS_PARTICIPTING']}:</h4>
+                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'#00aaff',width:"100%"}}>
                 {studentsRoom && studentsRoom.inRoom.length>0?studentsRoom.inRoom.map((student,index)=>{
                     return (
-                      <div key={'student_'+student.user_id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                      <div key={'student_'+student.user_id} className="small-block-in">
                         <div style={{width:'75%'}}>{student.name} {student.surname}</div>
                         {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>:
+                          <div><Button type="primary" onClick={()=>{outInMoveStudentRoom(student.user_id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>:
                           ''
                         }
                       </div>
@@ -439,14 +447,14 @@ const Room = () => {
             <div className="quiz_block" style={{width:'50%'}}>
               {!room.room.isRunning?
                 <div>
-                  <h4>{languagePack[lang]['QUIZZES_AVAILABLE']}: </h4>
-                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150}}>
+                  <h4 className='h4-right'>{languagePack[lang]['QUIZZES_AVAILABLE']}: </h4>
+                  <div className="room_out" style={{display:'flex',flexWrap:'wrap',borderStyle:'dotted',borderWidth:1,padding:20,borderColor:'grey',width:"100%",overflowY:'auto',height:150,marginLeft:'2%',width:"98%"}}>
                     {quizesRoom && quizesRoom.outRoom.length>0?quizesRoom.outRoom.map((quiz,index)=>{
                       return (
-                        <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'grey',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                        <div key={'student_'+quiz.id} className="small-block-out">
                           <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
                           {!room.room.isRunning?
-                            <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>{languagePack[lang]['ADD']}</Button></div>
+                            <div><Button type="primary" onClick={()=>{outInMoveQuizRoom(quiz.id,'in')}}>{languagePack[lang]['ADD']}</Button></div>
                             :
                             ''
                           }
@@ -457,14 +465,14 @@ const Room = () => {
                 </div>:''
               }
               <div>
-                <h4>{languagePack[lang]['QUIZZES_ACCEPTED']}:</h4>
-                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'blue',width:"100%"}}>
+                <h4 className='h4-right'>{languagePack[lang]['QUIZZES_ACCEPTED']}:</h4>
+                <div className="room_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'#00aaff',marginLeft:'2%',width:"98%"}}>
                 {quizesRoom && quizesRoom.inRoom.length>0?quizesRoom.inRoom.map((quiz,index)=>{
                     return (
-                      <div key={'student_'+quiz.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'blue',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50}}>
+                      <div key={'student_'+quiz.id} className="small-block-in">
                         <div style={{width:'75%'}}>{quiz.name} {quiz.surname}</div>
                         {!room.room.isRunning?
-                          <div><Button onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>
+                          <div><Button type="primary" onClick={()=>{outInMoveQuizRoom(quiz.id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>
                           :
                           ''
                         }

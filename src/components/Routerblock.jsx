@@ -1,7 +1,7 @@
-import { HomeTwoTone, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined } from '@ant-design/icons';
+import { HomeTwoTone, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined, GlobalOutlined } from '@ant-design/icons';
 import { Layout, Flex, Menu, Button } from 'antd';
-import { useState, useContext } from 'react';
-import { Navigate, Outlet, Link } from 'react-router-dom';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { UserContext } from "../context/UserContext.jsx";
 import { languagePack } from '../data/language.js';
 
@@ -29,13 +29,46 @@ const headerStyle = {
   paddingRight:5,
 };
 
-const contentStyle = {
+const contentStyleBlank = {
+  textAlign: 'left',
+  minHeight: 640,
+  height: '100%',
+  lineHeight: '12px',
+  color: '#333',
+  backgroundColor: '#FFFFFF',
+  padding:20,
+  paddingBottom:70
+};
+
+const contentStyleStudent = {
   textAlign: 'left',
   minHeight: 420,
   height: '100%',
   lineHeight: '12px',
   color: '#333',
-  backgroundColor: '#fff',
+  backgroundColor: '#F7C9CE',
+  padding:20,
+  paddingBottom:70
+};
+
+const contentStyleTeacher = {
+  textAlign: 'left',
+  minHeight: 420,
+  height: '100%',
+  lineHeight: '12px',
+  color: '#333',
+  backgroundColor: '#D0E1DB',
+  padding:20,
+  paddingBottom:70
+};
+
+const contentStyleManager = {
+  textAlign: 'left',
+  minHeight: 420,
+  height: '100%',
+  lineHeight: '12px',
+  color: '#333',
+  backgroundColor: '#C3D1E0',
   padding:20,
   paddingBottom:70
 };
@@ -62,11 +95,37 @@ const Routerblock = () => {
   const [ lang, setLang] = useState(localStorage.getItem("lang"));
 
   const { logout, user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  console.log(user)
+
+  const contentStyle = (user && user.role?user.role==1?contentStyleTeacher:user.role==2?contentStyleManager:contentStyleStudent:contentStyleBlank)
+
+/*
+  if(!user){
+//    navigate('/login')
+  }
+*/
+  useEffect(() => {
+    setLang(localStorage.getItem("lang"));
+  }, [lang]);
 
   const [current, setCurrent] = useState('h');
   const onClick = (e) => {
 //    console.log('click ', e);
     switch(e.key){
+      case 'langRU':
+        localStorage.setItem("lang",'RU')
+        setLang(localStorage.getItem("lang"));
+      break;
+      case 'langEN':
+        localStorage.setItem("lang",'EN')
+        setLang(localStorage.getItem("lang"));
+      break;
+      case 'langDE':
+        localStorage.setItem("lang",'DE')
+        setLang(localStorage.getItem("lang"));
+      break;
       case 'o':
         logout()
       break;
@@ -83,7 +142,6 @@ const Routerblock = () => {
 
   return (
     <Flex gap="middle" wrap="wrap">
-      {!user && <Navigate replace to="/login" />}
       <Layout style={layoutStyle}>
         <Header style={headerStyle}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal"  theme="light">
@@ -109,7 +167,7 @@ const Routerblock = () => {
                 ):user.role==2?(
                   <>
                     <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
-                      <Link to="/quiz">{languagePack[lang]['QUIZ']}</Link>
+                      <Link to="/quiz">{languagePack[lang]['QUIZZES']}</Link>
                     </Menu.Item>
                     <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
                       <Link to="/questions">{languagePack[lang]['QUESTIONS']}</Link>
@@ -127,7 +185,16 @@ const Routerblock = () => {
                 )
               :''
             }
-            <Menu.Item key="l" icon= {!user?<CheckCircleTwoTone />:<QqOutlined />}  style={{ marginLeft: 'auto' }}>
+            <Menu.Item key="langEN" style={{backgroundColor:(lang=='EN'?'green':'white'), color:(lang=='EN'?'white':'grey'),marginLeft: 'auto', padding: '0 5px', fontWeight: 'bold' }}>
+              EN
+            </Menu.Item>
+            <Menu.Item key="langDE" style={{backgroundColor:(lang=='DE'?'green':'white'), color:(lang=='DE'?'white':'grey'),marginLeft: 1, padding: '0 5px', fontWeight: 'bold' }}>
+              DE
+            </Menu.Item>
+            <Menu.Item key="langRU" style={{backgroundColor:(lang=='RU'?'green':'white'), color:(lang=='RU'?'white':'grey'), marginLeft: 1, padding: '0 5px', fontWeight: 'bold' }}>
+              RU
+            </Menu.Item>
+            <Menu.Item key="l" icon= {!user?<CheckCircleTwoTone />:<QqOutlined />}  style={{ marginLeft: '10px', padding: 0 }}>
               {!user?
                 (<Link to="/login">{languagePack[lang]['LOGIN']}</Link>):
                 (<Link to="/profile">{languagePack[lang]['PROFILE']}</Link>)
@@ -135,13 +202,13 @@ const Routerblock = () => {
             </Menu.Item>
             {user &&
               <Menu.Item key="o" icon={<ApiOutlined />}>
-              {languagePack[lang]['LOGOUT']}
+               {languagePack[lang]['LOGOUT']}
               </Menu.Item>
             }
           </Menu>
         </Header>
         <Content style={contentStyle}>
-          <Outlet/>
+          <Outlet context={[lang]} />
         </Content>
         <Footer style={footerStyle}>{languagePack[lang]['FOOTER']}</Footer>
       </Layout>

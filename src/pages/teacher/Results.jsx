@@ -4,24 +4,31 @@ import { UserContext } from "../../context/UserContext.jsx";
 import StudentResults from "../../components/StudentResults.jsx";
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
 
 const Results = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  if(user!=null && user.role==2){
-    navigate('/profile')
-  }      
-
   const [studentsMass, setStudents] = useState(null);
 
+  if(user!=null && user.role==2){
+    navigate('/profile')
+  }
+
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }
+
     getStudents()
-  }, []);
+
+  }, [user]);
 
   function getStudents(){
 

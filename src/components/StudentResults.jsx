@@ -77,7 +77,7 @@ const StudentResults = (params) => {
     <>
       {params.userId && results && results.resultsData?results.resultsData.map((result,index)=>{
         return (
-          <div key={'room_'+index} style={{flexWrap:'wrap',borderWidth:2,display:'flex',border:'1px solid #ccc',borderRadius:10,marginBottom:5,padding:20}}>
+          <div key={'room_'+index} style={{flexWrap:'wrap',borderWidth:2,display:'flex',border:'1px solid #ccc',borderRadius:10,marginBottom:5,padding:20,padding:5,backgroundColor:'#fff'}}>
             {!params.oneUser?
               <h3 style={{width:'100%',color:'brown'}}>{languagePack[lang]['STUDENT']}: {params.firstname} {params.lastname}</h3>:''
             }
@@ -100,7 +100,7 @@ const StudentResults = (params) => {
               <small style={{fontSize:14}}>{result.finished?languagePack[lang]['TEST_FINISHED']:''}</small>
             </div>
             {result.show_results==1?
-              <div style={{width:'100%',borderTop:'1px solid #ccc',paddingTop:5}}>
+              <div style={{width:'100%',borderTop:'1px solid #ccc',padding:5,backgroundColor:'#fff'}}>
                 <h6>{languagePack[lang]['RESULTS']}</h6>
                 <div style={{display:'flex'}}>
                   {results.resultsQuestion.filter((elem)=>{

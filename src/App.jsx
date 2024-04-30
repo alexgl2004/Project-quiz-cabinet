@@ -50,7 +50,7 @@ const router = createBrowserRouter(
 
 function App({routers}) {
 
-  localStorage.setItem("lang","EN");
+//  localStorage.setItem("lang","EN");
   const lang = localStorage.getItem("lang");
 //  console.log(lang)
 

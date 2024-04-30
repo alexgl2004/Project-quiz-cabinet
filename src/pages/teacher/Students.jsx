@@ -6,32 +6,49 @@ import {
 } from 'antd';
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
+import './css/students.css';
 
 const Students = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  if(user && user.role!=1){
-    navigate('/profile')
-  }
 
   const [students, setStudents] = useState(null);
   const [newStudentID, setnewStudentID] = useState(null);
 
+  console.log(1,user)
+  
+  if(user && user.role!=1){
+    navigate('/profile')
+  }
+
+  if(newStudentID){
+    navigate('/students/'+newStudentID)
+  }  
+
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }
+
     getStudents()
-  }, []);
+
+  }, [user]);
 
   function getStudents(){
 //    console.log(students)
+    if(user==null) return
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: user.id }),
       mode:'cors'
-    };        
+    };
 
 //    useEffect(() => {
 
@@ -88,16 +105,34 @@ const Students = () => {
 
   return (
     <>
-      {newStudentID?<><Navigate replace to={"/students/"+newStudentID} /></>:''}
       <h1>{languagePack[lang]['STUDENTS']}</h1>
+      <Button style={{marginBottom:20}} type="primary" onClick={addStudent}>{languagePack[lang]['ADD_NEW_STUDENT']}</Button>
       {students?students.map((student,index)=>{
         return (
-          <div key={'student_'+index}style={{borderWidth:2,padding:10}}>
-            {index+1}. <Link to={'/students/' + student.id}>{student.title}, {student.name}, {student.surname}, {student.email}</Link>
+          <div key={'student_'+index} style={{borderWidth:2, marginBottom:10}}>
+            <Link to={'/students/' + student.id} className='student'>
+              <div className="BlockCounter">
+                {index+1}
+              </div>
+              <div className="BlockTitle">
+                {languagePack[lang][student.title.toUpperCase()]}
+              </div>
+              <div className="BlockName">
+                {student.name} {student.surname}
+              </div>
+              <div className="BlockEmail">
+                <span>{languagePack[lang]['EMAIL']}:</span> {student.email}
+              </div>
+              <div className="BlockLogin">
+                <span>{languagePack[lang]['LOGIN']}:</span> {student.login}
+              </div>
+              <div className="BlockLogin">
+                <span>{languagePack[lang]['PASSWORD']}:</span> {student.password}
+              </div>
+            </Link>
           </div>
         )
       }):''}
-      <Button onClick={addStudent}>{languagePack[lang]['ADD_NEW_STUDENT']}</Button>
     </>
   )
 }

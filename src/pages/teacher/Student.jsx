@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
 import { path_server } from '../../../path.js';
-
 import {
   Button,
   DatePicker,
@@ -14,6 +13,7 @@ import {
   Upload,
 } from 'antd';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -28,13 +28,11 @@ const normFile = (e) => {
 
 const StudentC = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
   
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  if(!user){
-    navigate('/login')
-  }
+
   
   const student = useRef({});
   let params = useParams();
@@ -43,10 +41,16 @@ const StudentC = () => {
   const [student_temp, setUsertem] = useState(null);
 
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }    
+    
     if(user && student_temp==null){
       getStudent(params.id) 
     }
-  })  
+
+  }, [user]);
 
 //  console.log(student_temp)
 
@@ -211,6 +215,10 @@ const StudentC = () => {
             maxWidth: 600,
           }}
         >
+          <Form.Item>
+            <Button type='primary' onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+            <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
+          </Form.Item>          
           <Form.Item label={languagePack[lang]['LOGIN']}>
             <b>{student_temp.login}</b>
           </Form.Item>
@@ -299,12 +307,6 @@ const StudentC = () => {
               value={student_temp.password} 
             />
           </Form.Item>          
-          <Form.Item>
-            <Button onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
-          </Form.Item>
-          <Form.Item>
-            <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
-          </Form.Item>
         </Form>
         <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
       </>:''}

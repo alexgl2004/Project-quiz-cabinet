@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { PlusOutlined } from '@ant-design/icons';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
 
 import {
   Button,
@@ -26,15 +27,19 @@ const normFile = (e) => {
 
 const Profile = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
   
   const { changeUserData, user, userMsg } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  if(!user){
-    navigate('/login')
-  }
+  useEffect(() => {
+  
+    if(user==null){
+      navigate('/login')
+    }
+  
+  }, [user]);
 
   let userMsg_all = userMsg;
 
@@ -223,13 +228,12 @@ const Profile = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+          <Button type="primary" onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
         </Form.Item>
         <Form.Item>
           <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
         </Form.Item>
       </Form>
-      <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
     </>
   );
 };

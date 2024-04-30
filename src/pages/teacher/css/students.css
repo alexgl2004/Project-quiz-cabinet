@@ -1,0 +1,59 @@
+.student{
+    display: flex;
+    width: 100%;
+/*    max-width: 780px;*/
+    flex-direction: row;
+    justify-content: flex-start;
+    text-decoration: none;
+    border:1px solid green;
+    padding:10px;
+    border-radius: 5px;
+    margin-left: 0;
+    background: #fff;
+}
+
+
+.student:hover{
+    background-color: #eee;
+}
+
+
+    .BlockCounter{
+       width:30px;
+       border:1px solid #ccc;
+       padding:5px;
+       text-align: center;
+       margin-right:10px;
+       font-weight: bold;       
+    }
+
+    .BlockTitle{
+        text-align: left;
+        border:1px solid transparent;
+        padding:5px;
+        padding-right:0;
+    }
+    .BlockName{
+        padding:5px;
+        border:1px solid transparent;
+        min-width: 210px;
+    }
+        
+    .BlockEmail{
+        padding:5px;
+        border:1px solid transparent;
+        color:#333;
+        min-width: 300px;
+    }
+
+    .BlockLogin{
+        padding:5px;
+        border:1px solid transparent;
+        color:#333;
+        min-width: 160px;
+    }    
+    
+
+    .BlockEmail span, .BlockLogin span{
+        color:#aaa;
+    }

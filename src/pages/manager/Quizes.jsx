@@ -6,10 +6,12 @@ import {
 } from 'antd';
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
+import '../teacher/css/rooms.css';
 
 const Quizes = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
@@ -25,13 +27,19 @@ const Quizes = () => {
 
   if(newQuizID){
     navigate("/quiz/"+newQuizID)
-  }    
+  }
 
 //  const { rooms, getRooms } = useContext(TeacherContext);
 
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }
+  
     getQuizes()
-  }, []);
+
+  }, [user]);
 
   function addQuiz(){
 
@@ -65,6 +73,8 @@ const Quizes = () => {
 
   function getQuizes(){
     //    console.log(students)
+    if(user==null) return
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -105,14 +115,22 @@ const Quizes = () => {
   return (
     <>
       <h1>{languagePack[lang]['QUIZZES']}</h1>
+      <Button style={{marginBottom:20}} type="primary" onClick={addQuiz}>{languagePack[lang]['ADD_NEW_QUIZ']}</Button>      
       {quizes?quizes.map((quiz,index)=>{
         return (
-          <div key={'quiz_'+index} style={{borderWidth:2,padding:10}}>
-            {index+1}. <Link to={'/quiz/' + quiz.id}>{quiz.name}</Link>
+          <div key={'quiz_'+index} style={{borderWidth:2,marginBottom:10}}>
+            <Link to={'/quiz/' + quiz.id} className='quiz'>
+              <div className="BlockCounter">
+                {index+1}
+              </div>
+              <div className="BlockTitle">
+              {quiz.name}
+              </div>
+            </Link>
           </div>
+
         )
       }):''}
-      <Button onClick={addQuiz}>{languagePack[lang]['ADD_NEW_QUIZ']}</Button>
     </>
   )
 }

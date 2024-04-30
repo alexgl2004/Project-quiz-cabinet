@@ -5,10 +5,11 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
 
 const Login = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { logout, login, user, userMsg } = useContext(UserContext);
 

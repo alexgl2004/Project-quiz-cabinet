@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 import ModalAnswer from "../../components/ModalAnswer.jsx";
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
+import { useOutletContext } from "react-router-dom";
 
 import {
   Button,
@@ -16,16 +17,12 @@ const { TextArea } = Input;
 
 const Questions = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  if(user && user.role!=2){
-    navigate('/profile')
-  }      
-  
 
   const [questions, setQuestions] = useState(null);
 //  const [answers, setAnswers] = useState(null);  
@@ -33,9 +30,19 @@ const Questions = () => {
   const [tempNameDescription, setTempNameDescription] = useState(null);
   const [filterQuestion, setFilterQuestion] = useState({text:''});
 
+  if(user && user.role!=2){
+    navigate('/profile')
+  }      
+  
   useEffect(() => {
+
+    if(user==null){
+      navigate('/login')
+    }
+    
     getQuestions()
-  }, []);
+
+  }, [user]);
 
   const getTheme = (e) => {
     if(tempNameDescription.edit==1){
@@ -248,6 +255,9 @@ const Questions = () => {
 
   function getQuestions(){
     //    console.log(students)
+
+    if(user==null) return
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -329,15 +339,16 @@ const Questions = () => {
       <h1>{languagePack[lang]['QUESTIONS']}</h1>
       <div style={{display:'flex'}}>
         <div style={{width:'30%',overflowY:'auto',maxHeight:500}}>
-          <Button onClick={addQuestion}>{languagePack[lang]['ADD_NEW_QUESTION']}</Button>
-          <Form.Item style={{padding:5,margin:0,marginTop:5, borderStyle:'solid',borderWidth:1,borderColor:'#ccc',borderBottom:0}}>
+          <Button type="primary" onClick={addQuestion}>{languagePack[lang]['ADD_NEW_QUESTION']}</Button>
+          <Form.Item style={{padding:5,margin:0,marginTop:5, borderStyle:'solid',borderWidth:2,borderColor:'#007AAE',borderBottom:0}}>
             <Input 
+              placeholder={languagePack[lang]['FILTER_BY_NAME']}
               name="filter" 
               onChange={(e)=>{onChangeND(e,'filter')}}
               value={filterQuestion.text?filterQuestion.text:''}
             />
           </Form.Item>
-          <div style={{borderStyle:'solid',borderWidth:1,borderColor:'#ccc'}}>
+          <div style={{borderStyle:'solid',borderWidth:2,borderColor:'#007AAE'}}>
             {questions && questions.filtered?questions.filtered.map((question,index)=>{
 //                console.log(question)
                 if(themeChange != question.theme){
@@ -347,23 +358,23 @@ const Questions = () => {
                   outTheme = ''
                 }
                 return (
-                  <>
+                  <div key={'question_block_'+index}>
                     {outTheme?
-                    <h5 onClick={(e)=>{getTheme(e)}} style={{backgroundColor:'#ccc',color:'white',cursor: 'pointer'}}>{outTheme}</h5>
+                    <h5 onClick={(e)=>{getTheme(e)}} style={{backgroundColor:'#007AAE',color:'white',cursor: 'pointer',padding: '5px 10px', marginTop:5}}>{outTheme}</h5>
                     :''
                     }
-                    <div key={'question_'+index} style={{borderWidth:2,padding:2}}>
+                    <div key={'question_'+index} style={{borderWidth:2,padding:2, margin:3}}>
                       <Button style={{width:'80%',textAlign:'left'}} onClick={()=>{getAnswers(question.id)}}>{question.header}</Button>
-                      <Button style={{marginLeft:'2%',width:'18%',textAlign:'center'}} onClick={()=>{delQuestion(question.id)}}>{languagePack[lang]['DELETE_BUTTON']}</Button>
+                      <Button style={{color:'#B84A5B',marginLeft:'2%',width:'18%',textAlign:'center'}} onClick={()=>{delQuestion(question.id)}}>{languagePack[lang]['DELETE_BUTTON']}</Button>
                     </div>
-                  </>
+                    </div>
                 )
               }
             )
             :''}
           </div>
         </div>
-        <div style={{display:'flex', marginLeft:'2%', width:'68%', border:'1px solid #aaa', padding:2}}>
+        <div style={{display:'flex', marginLeft:'2%', width:'68%', border:'1px solid #aaa', padding:2,backgroundColor:'white'}}>
           {questions && questions.nowQuestion?
             <div style={{width:'60%',padding:10}}>
               {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
@@ -374,7 +385,7 @@ const Questions = () => {
                   <div className="theme_text" style={{margin:10}}><em>{languagePack[lang]['THEME']}: </em> {tempNameDescription.theme?tempNameDescription.theme:questions.nowQuestion.theme}</div>
                   <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_OF_QUESTION']}: </em>{tempNameDescription.text?tempNameDescription.text:questions.nowQuestion.text}</div>
                   <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_CORRECT_ANSWER']}: </em>{tempNameDescription.text_right?tempNameDescription.text_right:questions.nowQuestion.text_right}</div>
-                  <div className="points" style={{margin:10}}><em>{languagePack[lang]['TEXT_POINTS_CORRECT_ANSWER']}: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
+                  <div className="points" style={{margin:10}}><em>{languagePack[lang]['TEXT_MAX_POINTS']}: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
                 </>:
                 <>
                   <Form.Item label={languagePack[lang]['HEADER_OF_QUESTION']}>
@@ -405,7 +416,7 @@ const Questions = () => {
                       value={tempNameDescription.text_right}
                     />
                   </Form.Item>
-                  <Form.Item label={languagePack[lang]['TEXT_MAX_POINTS_CORRECT_ANSWER']}>
+                  <Form.Item label={languagePack[lang]['TEXT_MAX_POINTS']}>
                     <Input 
                       name="points" 
                       onChange={(e)=>{onChangeND(e,'points')}} 

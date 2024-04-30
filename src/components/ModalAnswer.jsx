@@ -3,11 +3,12 @@ import { Checkbox, Form, Input, Button, Modal, Space } from 'antd';
 import { path_server } from '../../path';
 import { languagePack } from '../data/language';
 const { TextArea } = Input;
+import { useOutletContext } from "react-router-dom";
 
 const ModalAnswer = (params) => {
 
 //  console.log(params)
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
 
   const [isModalOpen, setIsModalOpen] = useState([false, false]);
   const [tempNameDescription, setTempNameDescription] = useState(null);
@@ -100,7 +101,7 @@ const ModalAnswer = (params) => {
   return (
     <>
       <Space>
-        <Button onClick={() =>{
+        <Button type="primary" onClick={() =>{
             toggleModal(0, true)
             setTempNameDescription({
               answer: params.answerContent?params.answerContent.answer:"",
@@ -114,11 +115,11 @@ const ModalAnswer = (params) => {
           {params && parseInt(params.add)==1?languagePack[lang]['ADD_ANSWER']:languagePack[lang]['EDIT']}
         </Button>
         {params && parseInt(params.add)!=1?
-          <Button onClick={() =>{
+          <Button style={{color:'#B84A5B'}} onClick={() =>{
             delAnswer(params.answerId, params.questionId)
           }
           }>
-            Del
+            {languagePack[lang]['DELETE_BUTTON']}
           </Button>:
           ''
         }

@@ -1,9 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { languagePack } from '../data/language'
+import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
 
-  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+  const [lang] = useOutletContext();
+
+//  const [ lang, setLang] = useState(localStorage.getItem("lang"));
+
+  useEffect(() => {
+//    setLang(localStorage.getItem("lang"));
+  }, [lang]);
 
   return (
     <>

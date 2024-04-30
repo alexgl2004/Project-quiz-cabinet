@@ -1,0 +1,95 @@
+h4.h4-left{
+    margin-top:10px;
+/*    margin-left:'2%';*/
+}
+
+h4.h4-right{
+    margin-top:10px;
+    margin-left:2%;
+}
+
+.test{
+    display: flex;
+    width: 100%;
+/*    max-width: 780px;*/
+    flex-direction: row;
+    justify-content: flex-start;
+    text-decoration: none;
+    border:1px solid green;
+    padding:10px;
+    border-radius: 5px;
+    margin-left: 0;
+    background: #fff;
+}
+
+
+.test:hover{
+    background-color: #eee;
+}
+
+    .BlockCounter{
+       width:30px;
+       border:1px solid #ccc;
+       padding:5px;
+       text-align: center;
+       margin-right:10px;
+       font-weight: bold;       
+    }
+
+    .BlockTitle{
+        text-align: left;
+        border:1px solid transparent;
+        padding:5px;
+        padding-right:0;
+    }
+
+    .BlockName{
+        padding:5px;
+        border:1px solid transparent;
+        min-width: 210px;
+    }
+        
+    .BlockEmail{
+        padding:5px;
+        border:1px solid transparent;
+        color:#333;
+        min-width: 300px;
+    }
+
+    .BlockLogin{
+        padding:5px;
+        border:1px solid transparent;
+        color:#333;
+        min-width: 160px;
+    }    
+    
+
+    .BlockEmail span, .BlockLogin span{
+        color:#aaa;
+    }
+
+.test_in{
+    background-color: #fff;
+}
+
+.test_out{
+    background-color: #eee;
+}
+
+.small-block-in, .small-block-out{
+    display: flex;
+    border: 2px solid #00aaff;
+    padding: 10px;
+    width: 49%;
+    margin: bottom 4px;
+    margin-left: 1%;
+    cursor: pointer;
+    height: 50px;
+    background: #fff;
+    margin-bottom:5px;    
+}
+
+.small-block-out{
+    border: 2px solid #ccc;
+}
+
