@@ -10,6 +10,7 @@ export const languageEN =
     'ALL_IN_WORK_QUIZ':'All in work! Click "Remove" for remove question from the test',
     'ALL_IN_WORK_QUIZ_ROOM':'All in work! Click "Remove" for remove test from the room',
     'ALL_IN_WORK_ROOM':'All in work! Click "Remove" for remove student from the room',
+    'ALREADY_IN_USE':'Question used in test!!',
     'ANSWER':'answer',
     'ANSWERS OF QUIESTION':'Answers of the question',
     'BACK_TO_QUIZZES':'Back to the tests',

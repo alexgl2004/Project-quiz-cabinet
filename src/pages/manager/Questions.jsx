@@ -209,10 +209,14 @@ const Questions = () => {
         return res.json();
       })
       .then((data) => {
+        if(!data.isDeleted){
+          alert(languagePack[lang]['ALREADY_IN_USE'])
+        }
         setQuestions({
           firstLoaded: data.questionsData,
           filtered: data.questionsData
         })
+        console.log(question_id, data.questionsData)
         setTempNameDescription(null)
       });
     }

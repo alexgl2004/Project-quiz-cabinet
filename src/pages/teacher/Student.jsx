@@ -216,7 +216,7 @@ const StudentC = () => {
           }}
         >
           <Form.Item>
-            <Button type='primary' onClick={changeUser}>Save</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+            <Button type='primary' onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
             <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
           </Form.Item>          
           <Form.Item label={languagePack[lang]['LOGIN']}>

@@ -42,18 +42,18 @@ const contentStyleBlank = {
 
 const contentStyleStudent = {
   textAlign: 'left',
-  minHeight: 420,
+  minHeight: 640,
   height: '100%',
   lineHeight: '12px',
   color: '#333',
-  backgroundColor: '#F7C9CE',
+  backgroundColor: '#FFFCCC',
   padding:20,
   paddingBottom:70
 };
 
 const contentStyleTeacher = {
   textAlign: 'left',
-  minHeight: 420,
+  minHeight: 640,
   height: '100%',
   lineHeight: '12px',
   color: '#333',
@@ -64,7 +64,7 @@ const contentStyleTeacher = {
 
 const contentStyleManager = {
   textAlign: 'left',
-  minHeight: 420,
+  minHeight: 640,
   height: '100%',
   lineHeight: '12px',
   color: '#333',
