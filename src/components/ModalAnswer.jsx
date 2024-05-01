@@ -127,6 +127,8 @@ const ModalAnswer = (params) => {
       </Space>
       <Modal
         title={(params.add && parseInt(params.add)==1?languagePack[lang]['ADD']:languagePack[lang]['EDIT'])+languagePack[lang]['ANSWER']}
+        okText = {(params.add && parseInt(params.add)==1?languagePack[lang]['ADD']:languagePack[lang]['SAVE'])}
+        cancelText = {languagePack[lang]['CANCEL']}
         open={isModalOpen[0]}
         onOk={() => {
           toggleModal(0, false)

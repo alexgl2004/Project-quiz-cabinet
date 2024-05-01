@@ -8,10 +8,11 @@ import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
 import '../teacher/css/rooms.css';
+import '../teacher/css/student.css';
 
 const Quizes = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
@@ -108,29 +109,31 @@ const Quizes = () => {
     
     }
 
-    console.log(2,quizes)
+//    console.log(2,quizes)
 
 //[!] Add buttons to delete Room
 
   return (
     <>
-      <h1>{languagePack[lang]['QUIZZES']}</h1>
-      <Button style={{marginBottom:20}} type="primary" onClick={addQuiz}>{languagePack[lang]['ADD_NEW_QUIZ']}</Button>      
-      {quizes?quizes.map((quiz,index)=>{
-        return (
-          <div key={'quiz_'+index} style={{borderWidth:2,marginBottom:10}}>
-            <Link to={'/quiz/' + quiz.id} className='quiz'>
-              <div className="BlockCounter">
-                {index+1}
-              </div>
-              <div className="BlockTitle">
-              {quiz.name}
-              </div>
-            </Link>
-          </div>
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['QUIZZES']}</h1>
+      <div className={'bgText color'+nameAddColorCss+'Bg'}>
+        <Button style={{marginBottom:20}} type="primary" onClick={addQuiz}>{languagePack[lang]['ADD_NEW_QUIZ']}</Button>      
+        {quizes?quizes.map((quiz,index)=>{
+          return (
+            <div key={'quiz_'+index} style={{borderWidth:2,marginBottom:10}}>
+              <Link to={'/quiz/' + quiz.id} className='quiz'>
+                <div className={'color'+nameAddColorCss+" BlockCounter"}>
+                  {index+1}
+                </div>
+                <div className={'color'+nameAddColorCss+" BlockTitle"}>
+                {quiz.name}
+                </div>
+              </Link>
+            </div>
 
-        )
-      }):''}
+          )
+        }):''}
+      </div>
     </>
   )
 }

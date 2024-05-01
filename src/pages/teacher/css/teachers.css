@@ -1,0 +1,19 @@
+h1{
+    color:RGB(0,122,174);
+}
+
+.colorBlue{
+    color:RGB(0,122,174);
+}
+
+.colorOrange{
+    color:RGB(102,0,16);
+}
+
+.blockIn{
+    margin:0;
+    width:100%;
+    padding:20px;
+    border-radius: 10px;
+    background-color: RGB(200,235,250);
+}

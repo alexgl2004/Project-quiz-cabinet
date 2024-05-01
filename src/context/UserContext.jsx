@@ -1,6 +1,5 @@
 import { createContext, useEffect, useContext, useState, useRef } from "react";
 //import { users } from "../data/data";
-//import { router } from "expo-router";
 import { path_server } from "../../path";
 
 export const UserContext = createContext();
@@ -9,10 +8,12 @@ export function UserProvider({ children }) {
 
   const [ lang, setLang] = useState(localStorage.getItem("lang"));
   
+  
   // user: null if not logged in
   // { name: string, lastLogin: Date }
   const [user, setUser] = useState(null);//useState({'email':'test','password':'12345','name':'test','userid':'123456785'});
   const [userMsg, setMsg] = useState('');
+  const userTheme = useRef({});
 
   function changeUserData(userdata){
     setUser(userdata)
@@ -132,6 +133,7 @@ export function UserProvider({ children }) {
         logout,
         userMsg,
         changeUserData,
+        userTheme
       }}
     >
       {children}

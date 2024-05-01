@@ -7,12 +7,13 @@ import {
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
-import '../teacher/css/rooms.css';
+import './css/rooms.css';
+import './css/student.css';
 
 
 const Rooms = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -108,24 +109,26 @@ const Rooms = () => {
 
   return (
     <>
-      <h1>{languagePack[lang]['ROOMS']}</h1>
-      <Button style={{marginBottom:20}} type="primary" onClick={addRoom}>{languagePack[lang]['ADD_NEW_ROOM']}</Button>
-      {user && rooms?rooms.map((room,index)=>{
-        return (
-          <div key={'room_'+index} style={{borderWidth:2, marginBottom:10}}>
-            
-            <Link to={'/rooms/' + room.id} className='room'>
-              <div className="BlockCounter">
-                {index+1}
-              </div>
-              <div className="BlockTitle">
-                {room.name}
-              </div>
-            </Link>
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['ROOMS']}</h1>
+      <div className='blockIn'>
+        <Button style={{marginBottom:20}} type="primary" onClick={addRoom}>{languagePack[lang]['ADD_NEW_ROOM']}</Button>
+        {user && rooms?rooms.map((room,index)=>{
+          return (
+            <div key={'room_'+index} style={{borderWidth:2, marginBottom:10}}>
+              
+              <Link to={'/rooms/' + room.id} className='room'>
+                <div className={'color'+nameAddColorCss+" BlockCounter"}>
+                  {index+1}
+                </div>
+                <div className={'color'+nameAddColorCss+" BlockTitle"}>
+                  {room.name}
+                </div>
+              </Link>
 
-          </div>
-        )
-      }):''}
+            </div>
+          )
+        }):''}
+      </div>
     </>
   )
 }

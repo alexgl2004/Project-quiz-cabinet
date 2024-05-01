@@ -8,10 +8,11 @@ import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
 import './css/students.css';
+import './css/teachers.css';
 
 const Students = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -105,34 +106,33 @@ const Students = () => {
 
   return (
     <>
-      <h1>{languagePack[lang]['STUDENTS']}</h1>
-      <Button style={{marginBottom:20}} type="primary" onClick={addStudent}>{languagePack[lang]['ADD_NEW_STUDENT']}</Button>
-      {students?students.map((student,index)=>{
-        return (
-          <div key={'student_'+index} style={{borderWidth:2, marginBottom:10}}>
-            <Link to={'/students/' + student.id} className='student'>
-              <div className="BlockCounter">
-                {index+1}
-              </div>
-              <div className="BlockTitle">
-                {languagePack[lang][student.title.toUpperCase()]}
-              </div>
-              <div className="BlockName">
-                {student.name} {student.surname}
-              </div>
-              <div className="BlockEmail">
-                <span>{languagePack[lang]['EMAIL']}:</span> {student.email}
-              </div>
-              <div className="BlockLogin">
-                <span>{languagePack[lang]['LOGIN']}:</span> {student.login}
-              </div>
-              <div className="BlockLogin">
-                <span>{languagePack[lang]['PASSWORD']}:</span> {student.password}
-              </div>
-            </Link>
-          </div>
-        )
-      }):''}
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['STUDENTS']}</h1>
+      <div className='blockIn'>
+        <Button style={{marginBottom:20}} type="primary" onClick={addStudent}>{languagePack[lang]['ADD_NEW_STUDENT']}</Button>
+        {students?students.map((student,index)=>{
+          return (
+            <div key={'student_'+index} style={{borderColor:'RGB(0,122,174)',borderWidth:2, marginBottom:10}}>
+              <Link to={'/students/' + student.id} className='student'>
+                <div className={'color'+nameAddColorCss+" BlockCounter"}>
+                  {index+1}
+                </div>
+                <div className={'color'+nameAddColorCss+" BlockTitle"}>
+                  {languagePack[lang][student.title.toUpperCase()]}
+                </div>
+                <div className={'color'+nameAddColorCss+" BlockName"}>
+                  {student.name} {student.surname}
+                </div>
+                <div className="BlockLogin">
+                  <span>{languagePack[lang]['LOGIN']}:</span> {student.login}
+                </div>
+                <div className="BlockPassword">
+                  <span>{languagePack[lang]['PASSWORD']}:</span> {student.password}
+                </div>
+              </Link>
+            </div>
+          )
+        }):''}
+      </div>
     </>
   )
 }

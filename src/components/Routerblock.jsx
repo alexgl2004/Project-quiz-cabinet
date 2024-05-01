@@ -1,21 +1,16 @@
-import { HomeTwoTone, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined, GlobalOutlined } from '@ant-design/icons';
-import { Layout, Flex, Menu, Button } from 'antd';
+import { UserOutlined, UsbOutlined, PartitionOutlined, ProjectOutlined, UsergroupAddOutlined, ReadOutlined, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined, GlobalOutlined } from '@ant-design/icons';
+import { ConfigProvider, Layout, Flex, Menu, Button } from 'antd';
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { UserContext } from "../context/UserContext.jsx";
 import { languagePack } from '../data/language.js';
 
+
+
+
 const { Content, Header, Footer } = Layout;
 
 const login = true;
-
-const layoutStyle = {
-  borderRadius: 8,
-  overflow: 'hidden',
-//  width: 'calc(50% - 8px)',
-  width: '100%',
-//  maxWidth: 'calc(50% - 8px)',
-};
 
 const headerStyle = {
   textAlign: 'center',
@@ -27,66 +22,90 @@ const headerStyle = {
   padding: 0,
   paddingLeft:5,
   paddingRight:5,
+  boxShadow: '0px 5px 5px rgba(0,0,0,0.2)',
+  zIndex:100,
 };
 
-const contentStyleBlank = {
-  textAlign: 'left',
-  minHeight: 640,
+  const headerInStyle = {
+    width:'100%',
+    maxWidth:980,
+    minWidth:800,
+    margin: '0 auto',
+  }
+
+
+const contentStyleAdd = {
+  width:'100%',
+  maxWidth:980,
+  minWidth:800,
+  minHeight: 660,
   height: '100%',
   lineHeight: '12px',
+  padding:20,
+  paddingBottom:70,
+  textAlign: 'left',
+  margin: '0 auto',
+  boxShadow: '0px 10px 10px 5px rgba(0,0,0,0.1)',
+  zIndex:10
+
+}
+
+const contentStyleBlank = {
   color: '#333',
   backgroundColor: '#FFFFFF',
-  padding:20,
-  paddingBottom:70
 };
 
 const contentStyleStudent = {
-  textAlign: 'left',
-  minHeight: 640,
-  height: '100%',
-  lineHeight: '12px',
-  color: '#333',
-  backgroundColor: '#FFFCCC',
-  padding:20,
-  paddingBottom:70
+  backgroundColor: 'RGB(255,178,125)',
+  backgroundImage: 'linear-gradient(180deg, RGB(255,204,169), transparent)',
 };
 
 const contentStyleTeacher = {
-  textAlign: 'left',
-  minHeight: 640,
-  height: '100%',
-  lineHeight: '12px',
-  color: '#333',
-  backgroundColor: '#D0E1DB',
-  padding:20,
-  paddingBottom:70
+  backgroundColor: 'RGB(96,197,241)',
+  backgroundImage: 'linear-gradient(180deg, RGB(148,216,246), transparent)',  
 };
 
 const contentStyleManager = {
-  textAlign: 'left',
-  minHeight: 640,
-  height: '100%',
-  lineHeight: '12px',
-  color: '#333',
-  backgroundColor: '#C3D1E0',
-  padding:20,
-  paddingBottom:70
+  backgroundColor: 'RGB(152,224,173)',
+  backgroundImage: 'linear-gradient(180deg, RGB(107,208,137), transparent)',  
 };
 
-const footerStyle = {
-  textAlign: 'left',
-  color: '#333',
-  backgroundColor: '#fff',
+const footerStyleAdd = {
+  textAlign: 'right',
   borderTopColor:'#ccc',
   borderWidth:0,
   borderBottomColor:'transparent',
   borderStyle:'solid',
-  borderTopWidth:2,
-  padding:20,
+  borderTopWidth:0,
+  padding:'21px 20px',
   position: "fixed",
   bottom: 0,
-  width: '100%'
+  width: '100%',
+  color: '#fff',
+  height: 50,
+  zIndex: 5
 };
+
+const footerStyleTeacher = {
+  backgroundColor: 'RGB(96,197,241)',
+  backgroundImage: 'linear-gradient(180deg, RGB(0,122,174), transparent)',  
+}
+
+const footerStyleManager = {
+  backgroundColor: 'RGB(107,208,137)',
+  backgroundImage: 'linear-gradient(180deg, RGB(19,133,53), transparent)',  
+}
+
+const footerStyleStudent = {
+  backgroundColor: 'RGB(255,178,125)',
+  backgroundImage: 'linear-gradient(180deg, RGB(191,91,22), transparent)',  
+}
+
+const footerStyleBlank = {
+  backgroundColor: 'RGB(184,74,91)',
+  backgroundImage: 'linear-gradient(180deg, RGB(102,0,16), transparent)',  
+}
+
 
 
 
@@ -94,13 +113,102 @@ const Routerblock = () => {
 
   const [ lang, setLang] = useState(localStorage.getItem("lang"));
 
-  const { logout, user } = useContext(UserContext);
+  const { logout, user, userTheme } = useContext(UserContext);
   const navigate = useNavigate();
+  
+  let nameAddColorCss = '';
 
-  console.log(user)
+  switch((user?user.role:0)){
+    case 1:
+      nameAddColorCss = 'Blue'
+    break;
+    case 2:
+      nameAddColorCss = 'Green'
+    break;
+    case 3:
+      nameAddColorCss = 'Orange'
+    break;
+    default:
+      nameAddColorCss = 'Red'
+    break;
+  }
 
-  const contentStyle = (user && user.role?user.role==1?contentStyleTeacher:user.role==2?contentStyleManager:contentStyleStudent:contentStyleBlank)
 
+  
+
+  let contentStyle;
+  let footerStyle;
+
+  if(user && user.role){
+    if(user.role==1){
+      contentStyle = {...contentStyleAdd,...contentStyleTeacher}
+      footerStyle = {...footerStyleAdd,...footerStyleTeacher}
+
+      userTheme.current = {
+        token: {
+          // Seed Token
+          colorPrimary: 'RGB(0,122,174)',
+  //              borderRadius: 2,
+          itemSelectedColor: 'RGB(0,122,174)',
+
+          // Alias Token
+  //              colorBgContainer: 'green',
+        },
+      }
+    }else if(user.role==2){
+      contentStyle = {...contentStyleAdd,...contentStyleManager}
+      footerStyle = {...footerStyleAdd,...footerStyleManager}
+      userTheme.current = {
+        token: {
+          // Seed Token
+          colorPrimary: 'RGB(29,142,63)',
+  //              borderRadius: 2,
+          itemSelectedColor: 'RGB(29,142,63)',
+
+          // Alias Token
+  //              colorBgContainer: 'green',
+        },
+      }
+    }else{
+      contentStyle = {...contentStyleAdd,...contentStyleStudent}
+      footerStyle = {...footerStyleAdd,...footerStyleStudent}
+      userTheme.current = {
+        token: {
+          // Seed Token
+          colorPrimary: 'RGB(191,91,22)',
+  //              borderRadius: 2,
+          itemSelectedColor: 'RGB(191,91,22)',
+
+          // Alias Token
+  //              colorBgContainer: 'green',
+        },
+      }
+    }
+  }else{
+    contentStyle = {...contentStyleAdd,...contentStyleBlank}
+    footerStyle = {...footerStyleAdd,...footerStyleBlank}
+    userTheme.current = {
+      token: {
+        // Seed Token
+        colorPrimary: 'RGB(102,0,16)',
+//              borderRadius: 2,
+        itemSelectedColor: 'RGB(102,0,16)',
+
+        // Alias Token
+//              colorBgContainer: 'green',
+      },
+    }
+  }
+
+  const layoutStyle = {
+    borderRadius: 8,
+    overflow: 'hidden',
+  //  width: 'calc(50% - 8px)',
+    width: '50%',
+    backgroundColor:userTheme.current.token.colorPrimary,
+  //  maxWidth: 'calc(50% - 8px)',
+  };
+  
 /*
   if(!user){
 //    navigate('/login')
@@ -141,79 +249,84 @@ const Routerblock = () => {
   }
 
   return (
-    <Flex gap="middle" wrap="wrap">
-      <Layout style={layoutStyle}>
-        <Header style={headerStyle}>
-          <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal"  theme="light">
-            <Menu.Item key="h" icon= {<HomeTwoTone />}>
-              <Link to="/">{languagePack[lang]['HOME']}</Link>
-            </Menu.Item>
-            <Menu.Item key="a" icon= {<InfoCircleOutlined />}>
-                  <Link to="/about">{languagePack[lang]['ABOUT']}</Link>
-            </Menu.Item>
-            {user?
-                user.role==1?(
-                  <>
-                    <Menu.Item key="s" icon= {<InfoCircleOutlined />}>
-                      <Link to="/students">{languagePack[lang]['STUDENTS']}</Link>
-                    </Menu.Item>
-                    <Menu.Item key="r" icon= {<InfoCircleOutlined />}>
-                      <Link to="/rooms">{languagePack[lang]['ROOMS']}</Link>
-                    </Menu.Item>
-                    <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
-                      <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
-                    </Menu.Item>
-                  </>
-                ):user.role==2?(
-                  <>
-                    <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
-                      <Link to="/quiz">{languagePack[lang]['QUIZZES']}</Link>
-                    </Menu.Item>
-                    <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
-                      <Link to="/questions">{languagePack[lang]['QUESTIONS']}</Link>
-                    </Menu.Item>
-                    <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
-                      <Link to="/stat">{languagePack[lang]['STATISTIC']}</Link>
-                    </Menu.Item>
-                  </>
-                ):(
-                  <>
-                    <Menu.Item key="qr" icon= {<InfoCircleOutlined />}>
-                      <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
-                    </Menu.Item>
-                  </>
-                )
-              :''
-            }
-            <Menu.Item key="langEN" style={{backgroundColor:(lang=='EN'?'green':'white'), color:(lang=='EN'?'white':'grey'),marginLeft: 'auto', padding: '0 5px', fontWeight: 'bold' }}>
-              EN
-            </Menu.Item>
-            <Menu.Item key="langDE" style={{backgroundColor:(lang=='DE'?'green':'white'), color:(lang=='DE'?'white':'grey'),marginLeft: 1, padding: '0 5px', fontWeight: 'bold' }}>
-              DE
-            </Menu.Item>
-            <Menu.Item key="langRU" style={{backgroundColor:(lang=='RU'?'green':'white'), color:(lang=='RU'?'white':'grey'), marginLeft: 1, padding: '0 5px', fontWeight: 'bold' }}>
-              RU
-            </Menu.Item>
-            <Menu.Item key="l" icon= {!user?<CheckCircleTwoTone />:<QqOutlined />}  style={{ marginLeft: '10px', padding: 0 }}>
-              {!user?
-                (<Link to="/login">{languagePack[lang]['LOGIN']}</Link>):
-                (<Link to="/profile">{languagePack[lang]['PROFILE']}</Link>)
-              }
-            </Menu.Item>
-            {user &&
-              <Menu.Item key="o" icon={<ApiOutlined />}>
-               {languagePack[lang]['LOGOUT']}
-              </Menu.Item>
-            }
-          </Menu>
-        </Header>
-        <Content style={contentStyle}>
-          <Outlet context={[lang]} />
-        </Content>
-        <Footer style={footerStyle}>{languagePack[lang]['FOOTER']}</Footer>
-      </Layout>
-    </Flex>
-   
+    <ConfigProvider
+      theme={userTheme.current}
+    >
+
+    
+      <Flex gap="middle" wrap="wrap" style={{justifyContent:'center'}}>
+        <Layout style={layoutStyle}>
+          <Header style={headerStyle}>
+            <div style={headerInStyle}>
+              <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal"  theme="light">
+                <Menu.Item key="h">
+                  <Link to="/">
+                    <img src="/favicon/apple-touch-icon.png" width="64" height="36" />
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="a" icon= {<ReadOutlined />}>
+                      <Link to="/about">{languagePack[lang]['ABOUT']}</Link>
+                </Menu.Item>
+                {user?
+                    user.role==1?(
+                      <>
+                        <Menu.Item key="s" icon= {<UsergroupAddOutlined />}>
+                          <Link to="/students">{languagePack[lang]['STUDENTS']}</Link>
+                        </Menu.Item>
+                        <Menu.Item key="r" icon= {<PartitionOutlined />}>
+                          <Link to="/rooms">{languagePack[lang]['ROOMS']}</Link>
+                        </Menu.Item>
+                        <Menu.Item key="qr" icon= {<ProjectOutlined />}>
+                          <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
+                        </Menu.Item>
+                      </>
+                    ):user.role==2?(
+                      <>
+                        <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
+                          <Link to="/quiz">{languagePack[lang]['QUIZZES']}</Link>
+                        </Menu.Item>
+                        <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
+                          <Link to="/questions">{languagePack[lang]['QUESTIONS']}</Link>
+                        </Menu.Item>
+                        <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
+                          <Link to="/stat">{languagePack[lang]['STATISTIC']}</Link>
+                        </Menu.Item>
+                      </>
+                    ):(
+                      <>
+                        <Menu.Item key="qr" icon= {<ProjectOutlined />}>
+                          <Link to="/results">{languagePack[lang]['RESULTS']}</Link>
+                        </Menu.Item>
+                      </>
+                    )
+                  :''
+                }
+                <Menu.Item key="l" icon= {!user?<UsbOutlined />:<UserOutlined />}  style={{ marginLeft:'auto', marginRight: 20, padding: 0 }}>
+                  {!user?
+                    (<Link to="/login">{languagePack[lang]['LOGIN']}</Link>):
+                    (<Link to="/profile">{languagePack[lang]['PROFILE']}</Link>)
+                  }
+                </Menu.Item>
+                {user &&
+                  <Menu.Item key="o" icon={<ApiOutlined />}>
+                  {languagePack[lang]['LOGOUT']}
+                  </Menu.Item>
+                }
+                {['DE','EN','RU'].map((elem)=>{
+                  return <Menu.Item key={"lang"+elem} style={{backgroundColor:(lang==elem?userTheme.current.token.colorPrimary:'white'), color:(lang==elem?'white':'grey'),marginLeft: 1, padding: '0 5px', fontWeight: 'bold' }}>
+                    {elem}
+                  </Menu.Item>
+                })}
+              </Menu>
+            </div>
+          </Header>
+          <Content style={contentStyle}>
+            <Outlet context={[lang,nameAddColorCss]} />
+          </Content>
+          <Footer style={footerStyle}>{languagePack[lang]['FOOTER']}</Footer>
+        </Layout>
+      </Flex>
+    </ConfigProvider> 
   )
 
 };

@@ -14,6 +14,7 @@ import {
 } from 'antd';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import './css/students.css';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -28,7 +29,7 @@ const normFile = (e) => {
 
 const StudentC = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
   
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -197,118 +198,118 @@ const StudentC = () => {
   return (
     <>
       {student_temp!=null?<>
-        <h1>
-          {languagePack[lang]['PROFILE_OF']} {student_temp?student_temp.role==1?languagePack[lang]['TEACHER']:student_temp.role==2?languagePack[lang]['MANAGER']:languagePack[lang]['STUDENT']:''}: {student_temp.name} {student_temp.surname}
-          <Link style={{fontSize:12,float:'right'}} to='/students'>{languagePack[lang]['BACK_TO_STUDENTS']}</Link>
+        <h1 className={'color'+nameAddColorCss}>
+          {student_temp?student_temp.role==1?languagePack[lang]['TEACHER']:student_temp.role==2?languagePack[lang]['MANAGER']:languagePack[lang]['STUDENT']:''}: {student_temp.name} {student_temp.surname}
+          <Link className={'color'+nameAddColorCss+" backButtonTop"} to='/students'>{languagePack[lang]['BACK_TO_STUDENTS']}</Link>
         </h1>
-        
-        <Form
-          labelCol={{
-            span: 4,
-          }}
-          wrapperCol={{
-            span: 14,
-          }}
-          layout="horizontal"
+        <div className='blockIn'>
+          <Form
+            labelCol={{
+              span: 4,
+            }}
+            wrapperCol={{
+              span: 14,
+            }}
+            layout="horizontal"
 
-          style={{
-            maxWidth: 600,
-          }}
-        >
-          <Form.Item>
-            <Button type='primary' onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
-            <Button onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
-          </Form.Item>          
-          <Form.Item label={languagePack[lang]['LOGIN']}>
-            <b>{student_temp.login}</b>
-          </Form.Item>
-          <Form.Item label={languagePack[lang]['TITLE']}>
-            <Radio.Group 
-              name="title" 
-              onChange={(e)=>{onChange(e,'title')}} 
-              value={student_temp.title}
+            style={{
+              maxWidth: 600,
+            }}
+          >
+            <Form.Item>
+              <Button type='primary' onClick={changeUser}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> {userMsg_all}</span>
+              <Button style={{marginLeft:8}} onClick={undoChangeUser}>{languagePack[lang]['CANCEL']}</Button>
+            </Form.Item>          
+            <Form.Item label={languagePack[lang]['LOGIN']}>
+              <b>{student_temp.login}</b>
+            </Form.Item>
+            <Form.Item label={languagePack[lang]['TITLE']}>
+              <Radio.Group 
+                name="title" 
+                onChange={(e)=>{onChange(e,'title')}} 
+                value={student_temp.title}
+              >
+                <Radio value={"Mr"}>{languagePack[lang]['MR']}</Radio>
+                <Radio value={"Ms"}>{languagePack[lang]['MS']}</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item 
+              label={languagePack[lang]['NAME']} 
+              rules={[
+                {
+                  required: true,
+                  message: languagePack[lang]['ENTER_NAME'],
+                },
+              ]}
             >
-              <Radio value={"Mr"}>{languagePack[lang]['MR']}</Radio>
-              <Radio value={"Ms"}>{languagePack[lang]['MS']}</Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item 
-            label={languagePack[lang]['NAME']} 
-            rules={[
-              {
-                required: true,
-                message: languagePack[lang]['ENTER_NAME'],
-              },
-            ]}
-          >
-            <Input 
-              name="name" 
-              onChange={(e)=>{onChange(e,'name')}} 
-              value={student_temp.name} 
-            />
-          </Form.Item>
-          <Form.Item 
-            label={languagePack[lang]['SURNAME']} 
-            rules={[
-              {
-                required: true,
-                message: languagePack[lang]['ENTER_SURNAME'],
-              },
-            ]}
-          >
-            <Input 
-              name="surname" 
-              onChange={(e)=>{onChange(e,'surname')}} 
-              value={student_temp.surname} 
-            />
-          </Form.Item>
-          <Form.Item label={languagePack[lang]['SCHOOL']}>
-            <Input 
-              name="school" 
-              onChange={(e)=>{onChange(e,'school')}} 
-              value={student_temp.school} 
-            />
-          </Form.Item>
-          <Form.Item label={languagePack[lang]['BIRTHDAY']}>
-            <DatePicker 
-              name="birthday" 
-              onChange={onChangeDatePicker} 
-              value={student_temp.birthday?dayjs(student_temp.birthday, dateFormat):''}
-              defaultValue={student_temp.birthday?dayjs(student_temp.birthday, dateFormat):''}
-            />
-          </Form.Item>
-          <Form.Item 
-            label={languagePack[lang]['EMAIL']} 
-            rules={[
-              {
-                required: false,
-                message: languagePack[lang]['ENTER_EMAIL'],
-              },
-            ]}
-          >
-            <Input 
-              name="email"
-              onChange={(e)=>{onChange(e,'email')}} 
-              value={student_temp.email}
-            />
-          </Form.Item>
-          <Form.Item 
-            label={languagePack[lang]['PASSWORD']}
-            rules={[
-              {
-                required: true,
-                message: languagePack[lang]['ENTER_PASSWORD'],
-              },
-            ]}
-          >
-            <Input 
-              name="password" 
-              onChange={(e)=>{onChange(e,'password')}} 
-              value={student_temp.password} 
-            />
-          </Form.Item>          
-        </Form>
-        <div style={{color:"red",fontWeight:"bold"}}>{userMsg_all}</div>
+              <Input 
+                name="name" 
+                onChange={(e)=>{onChange(e,'name')}} 
+                value={student_temp.name} 
+              />
+            </Form.Item>
+            <Form.Item 
+              label={languagePack[lang]['SURNAME']} 
+              rules={[
+                {
+                  required: true,
+                  message: languagePack[lang]['ENTER_SURNAME'],
+                },
+              ]}
+            >
+              <Input 
+                name="surname" 
+                onChange={(e)=>{onChange(e,'surname')}} 
+                value={student_temp.surname} 
+              />
+            </Form.Item>
+            <Form.Item label={languagePack[lang]['SCHOOL']}>
+              <Input 
+                name="school" 
+                onChange={(e)=>{onChange(e,'school')}} 
+                value={student_temp.school} 
+              />
+            </Form.Item>
+            <Form.Item label={languagePack[lang]['BIRTHDAY']}>
+              <DatePicker 
+                name="birthday" 
+                onChange={onChangeDatePicker} 
+                value={student_temp.birthday?dayjs(student_temp.birthday, dateFormat):''}
+                defaultValue={student_temp.birthday?dayjs(student_temp.birthday, dateFormat):''}
+              />
+            </Form.Item>
+            <Form.Item 
+              label={languagePack[lang]['EMAIL']} 
+              rules={[
+                {
+                  required: false,
+                  message: languagePack[lang]['ENTER_EMAIL'],
+                },
+              ]}
+            >
+              <Input 
+                name="email"
+                onChange={(e)=>{onChange(e,'email')}} 
+                value={student_temp.email}
+              />
+            </Form.Item>
+            <Form.Item 
+              label={languagePack[lang]['PASSWORD']}
+              rules={[
+                {
+                  required: true,
+                  message: languagePack[lang]['ENTER_PASSWORD'],
+                },
+              ]}
+            >
+              <Input 
+                name="password" 
+                onChange={(e)=>{onChange(e,'password')}} 
+                value={student_temp.password} 
+              />
+            </Form.Item>          
+          </Form>
+        </div>
       </>:''}
     </>
   );

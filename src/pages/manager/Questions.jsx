@@ -5,6 +5,7 @@ import ModalAnswer from "../../components/ModalAnswer.jsx";
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import '../teacher/css/student.css';
 
 import {
   Button,
@@ -17,7 +18,7 @@ const { TextArea } = Input;
 
 const Questions = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
@@ -209,7 +210,8 @@ const Questions = () => {
         return res.json();
       })
       .then((data) => {
-        if(!data.isDeleted){
+        //[!] Поправить помент с удалением, если вопрос уже находится в тесте
+        if(!data.isDeleted && data.msg=='already in test'){
           alert(languagePack[lang]['ALREADY_IN_USE'])
         }
         setQuestions({
@@ -340,11 +342,11 @@ const Questions = () => {
 
   return (
     <>
-      <h1>{languagePack[lang]['QUESTIONS']}</h1>
-      <div style={{display:'flex'}}>
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['QUESTIONS']}</h1>
+      <div className={'bgText color'+nameAddColorCss+'Bg'} style={{display:'flex'}}>
         <div style={{width:'30%',overflowY:'auto',maxHeight:500}}>
           <Button type="primary" onClick={addQuestion}>{languagePack[lang]['ADD_NEW_QUESTION']}</Button>
-          <Form.Item style={{padding:5,margin:0,marginTop:5, borderStyle:'solid',borderWidth:2,borderColor:'#007AAE',borderBottom:0}}>
+          <Form.Item style={{padding:5,margin:0,marginTop:5, borderStyle:'solid',borderWidth:0,borderColor:'RGB(29,142,63)',borderBottom:0}}>
             <Input 
               placeholder={languagePack[lang]['FILTER_BY_NAME']}
               name="filter" 
@@ -352,7 +354,7 @@ const Questions = () => {
               value={filterQuestion.text?filterQuestion.text:''}
             />
           </Form.Item>
-          <div style={{borderStyle:'solid',borderWidth:2,borderColor:'#007AAE'}}>
+          <div style={{borderStyle:'solid',borderWidth:2,borderColor:'RGB(29,142,63)'}}>
             {questions && questions.filtered?questions.filtered.map((question,index)=>{
 //                console.log(question)
                 if(themeChange != question.theme){
@@ -364,7 +366,7 @@ const Questions = () => {
                 return (
                   <div key={'question_block_'+index}>
                     {outTheme?
-                    <h5 onClick={(e)=>{getTheme(e)}} style={{backgroundColor:'#007AAE',color:'white',cursor: 'pointer',padding: '5px 10px', marginTop:5}}>{outTheme}</h5>
+                    <h5 onClick={(e)=>{getTheme(e)}} style={{backgroundColor:'RGB(29,142,63)',color:'white',cursor: 'pointer',padding: '5px 10px', marginTop:5}}>{outTheme}</h5>
                     :''
                     }
                     <div key={'question_'+index} style={{borderWidth:2,padding:2, margin:3}}>
@@ -380,16 +382,16 @@ const Questions = () => {
         </div>
         <div style={{display:'flex', marginLeft:'2%', width:'68%', border:'1px solid #aaa', padding:2,backgroundColor:'white'}}>
           {questions && questions.nowQuestion?
-            <div style={{width:'60%',padding:10}}>
+            <div style={{width:'60%',padding:10, lineHeight:'1.2'}}>
               {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
                 <>
                   <h5>
                     <em>{languagePack[lang]['HEADER']}: </em>{tempNameDescription.header?tempNameDescription.header:questions.nowQuestion.header}
                   </h5>
-                  <div className="theme_text" style={{margin:10}}><em>{languagePack[lang]['THEME']}: </em> {tempNameDescription.theme?tempNameDescription.theme:questions.nowQuestion.theme}</div>
-                  <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_OF_QUESTION']}: </em>{tempNameDescription.text?tempNameDescription.text:questions.nowQuestion.text}</div>
-                  <div className="description" style={{margin:10}}><em>{languagePack[lang]['TEXT_CORRECT_ANSWER']}: </em>{tempNameDescription.text_right?tempNameDescription.text_right:questions.nowQuestion.text_right}</div>
-                  <div className="points" style={{margin:10}}><em>{languagePack[lang]['TEXT_MAX_POINTS']}: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
+                  <div className="theme_text" style={{margin:10}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['THEME']}: </em> {tempNameDescription.theme?tempNameDescription.theme:questions.nowQuestion.theme}</div>
+                  <div className="description" style={{margin:10}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['TEXT_OF_QUESTION']}: </em>{tempNameDescription.text?tempNameDescription.text:questions.nowQuestion.text}</div>
+                  <div className="description" style={{margin:10}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['TEXT_CORRECT_ANSWER']}: </em>{tempNameDescription.text_right?tempNameDescription.text_right:questions.nowQuestion.text_right}</div>
+                  <div className="points" style={{margin:10}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['TEXT_MAX_POINTS']}: </em>{tempNameDescription.points?tempNameDescription.points:questions.nowQuestion.points}</div>
                 </>:
                 <>
                   <Form.Item label={languagePack[lang]['HEADER_OF_QUESTION']}>
@@ -445,17 +447,17 @@ const Questions = () => {
           <div style={{borderLeft:'1px solid #ccc',width:'40%',padding:10,overflowY:'auto',maxHeight:500}}>
             {questions && questions.nowAnswers?
               <>
-                <h5>{languagePack[lang]['ANSWERS OF QUIESTION']}</h5>
+                <h5>{languagePack[lang]['ANSWERS_OF_QUIESTION']}</h5>
                 <ModalAnswer getAnswers={getAnswers} add="1" questionId={questions.questionID} />
                 {questions.nowAnswers.map((answer,index)=>{
                   return (
-                    <div key={'answers_'+index} style={{position:"relative",border:'1px solid #ccc',padding:10,marginTop:5,minHeight:50}}>
-                      <div><em>{languagePack[lang]['CORRECT']}: </em>{answer.correct?languagePack[lang]['YES']:languagePack[lang]['NO']}</div>
-                      <div style={{marginTop:5}}><em>{languagePack[lang]['ANSWER']}: </em>{answer.answer}</div>
-                      <div style={{marginTop:5}}><em>{languagePack[lang]['COMMENT']}: </em>{answer.comment}</div>
-                      <div style={{position:"absolute",top:10,right:10}}>
+                    <div key={'answers_'+index} style={{position:"relative",border:'1px solid #ccc',padding:10,paddingTop:45,marginTop:5,minHeight:50}}>
+                      <div style={{position:"absolute",top:5,right:5}}>
                         <ModalAnswer getAnswers={getAnswers} answerContent={answer} questionId={questions.questionID} answerId={answer.id} />
                       </div>
+                      <div><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['CORRECT']}: </em>{answer.correct?languagePack[lang]['YES']:languagePack[lang]['NO']}</div>
+                      <div style={{marginTop:5}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['ANSWER']}: </em>{answer.answer}</div>
+                      <div style={{marginTop:5}}><em className={'colorLite'+nameAddColorCss}>{languagePack[lang]['COMMENT']}: </em>{answer.comment}</div>
                     </div>
                     )
                   })

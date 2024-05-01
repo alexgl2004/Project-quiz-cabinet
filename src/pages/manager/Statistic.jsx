@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import '../teacher/css/student.css';
 
 const Statistic = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
+  
 
   const navigate = useNavigate();
 
@@ -27,7 +29,9 @@ const Statistic = () => {
 
   return (
     <>
-      <h1>{languagePack[lang]['STATISTIC']}</h1>
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['STATISTIC']}</h1>
+      <div className={'bgText color'+nameAddColorCss+'Bg'}>
+      </div>
     </>
   )
 }

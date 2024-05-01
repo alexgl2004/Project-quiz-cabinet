@@ -1,33 +1,35 @@
-import dayjs from 'dayjs';
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import {
   Button,
   Form,
-  DatePicker,
   Input
 } from 'antd';
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import '../teacher/css/student.css';
 
 const { TextArea } = Input;
 //[+] добавить возможность фиксации для уже взятых в работу тестов и вопросов, а так же добавить возможность разблокирования(!)
 const Quiz = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
 
 
-
 //  const { quiz, getQuiz, setQuiz } = useContext(TeacherContext);
 
   const [ quizQuestions, setquizQuestions ] = useState(null);
   const [quiz, setQuiz] = useState(null);
+  const [tempQuiz, setTempQuiz] = useState(null);
+//  const [tempQuiz_1, setTempQuiz_1] = useState(null);
+  
+//  const tempQuiz = useRef(null);
   const [isEdit, setIsEdit] = useState(null);
   const [tempNameDescription, setTempNameDescription] = useState(null);
   const [filterQuiestion, setFilterQuiestion] = useState({text:''});
@@ -78,18 +80,36 @@ const Quiz = () => {
     })
     .then((data) => {
       if(data.quizData){
+
+        console.log(7,tempQuiz)
+        setTempQuiz(()=>{
+          return {
+            quiz: data.quizData,
+            questions: [...data.questionsData]
+          }
+        })
+/*
+        setTempQuiz_1(()=>{
+          return {
+            quiz: data.quizData,
+            questions: [...data.questionsData]
+          }
+        })
+*/
         setQuiz({
           quiz: data.quizData,
-          questions: data.questionsData
+          questions: [...data.questionsData]
         })
 //          setMsg(data.msg)
       }else{
 //          setMsg(data.msg)
       }
-      console.log(data);
+      console.log('data',data);
     });
 //    }, [user]);
   }
+
+  console.log(8,tempQuiz)
 
   function saveQuizData(quizdata,type='saveBody'){
 
@@ -121,6 +141,8 @@ const Quiz = () => {
   
 
   const filterQuestions = (newQuizQuiz, params = null) => {
+
+    console.log(newQuizQuiz)
 
     const newQuizInQuiz = newQuizQuiz.filter((value,index)=>{
       return value.isInQuiz
@@ -180,7 +202,7 @@ const Quiz = () => {
       return value
     })
 
-    console.log(newQuizQuiz)
+//    console.log(newQuizQuiz)
 
     filterQuestions(newQuizQuiz)
     contentChanged.current = 1
@@ -300,39 +322,35 @@ const Quiz = () => {
       {quiz?(<>
         {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
           <>
-            <h1>
+            <h1 className={'color'+nameAddColorCss}>
             {languagePack[lang]['QUIZ']}: {quiz.quiz.name}
-              <Link style={{fontSize:12,float:'right'}} to='/quiz'>{languagePack[lang]['BACK_TO_QUIZZES']}</Link>
+              <Link className={'color'+nameAddColorCss+" backButtonTop"} to='/quiz'>{languagePack[lang]['BACK_TO_QUIZZES']}</Link>
             </h1>
             
-            <div className="description" style={{margin:20}}>{quiz.quiz.description}</div>
+            <div className="description" style={{margin:20}}>
+              {quiz.quiz.description}
+              <Button type="primary" style={{marginLeft:20}} onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
+            </div>
           </>:
           <>
-            <Form.Item label={languagePack[lang]['NAME']}>
-              <Input 
-                name="name" 
-                onChange={(e)=>{onChangeND(e,'name')}} 
-                value={tempNameDescription.name?tempNameDescription.name:quiz.quiz.name} 
-              />
-            </Form.Item>
-            <Form.Item label={languagePack[lang]['DESCRIPTION']}>
-              <TextArea rows={4} 
-                name="description" 
-                onChange={(e)=>{onChangeND(e,'description')}} 
-                value={tempNameDescription.description?tempNameDescription.description:quiz.quiz.description}
-              />
-            </Form.Item>
-          </>
-        }
-
-
-        {tempNameDescription==null || (tempNameDescription && !tempNameDescription.edit)?
-          <>
-            <Button type="primary" onClick={openEdit}>{languagePack[lang]['EDIT_HEADER_AND_TEXT']}</Button>
-          </>:
-          <>
-            <Button type="primary" onClick={saveEdit}>{languagePack[lang]['SAVE']}</Button>
-            <Button onClick={cancelEdit}>{languagePack[lang]['CANCEL']}</Button>
+            <div className={'bgText color'+nameAddColorCss+'Bg'}>
+              <Form.Item label={languagePack[lang]['NAME']}>
+                <Input 
+                  name="name" 
+                  onChange={(e)=>{onChangeND(e,'name')}} 
+                  value={tempNameDescription.name?tempNameDescription.name:quiz.quiz.name} 
+                />
+              </Form.Item>
+              <Form.Item label={languagePack[lang]['DESCRIPTION']}>
+                <TextArea rows={4} 
+                  name="description" 
+                  onChange={(e)=>{onChangeND(e,'description')}} 
+                  value={tempNameDescription.description?tempNameDescription.description:quiz.quiz.description}
+                />
+              </Form.Item>
+              <Button type="primary" onClick={saveEdit}>{languagePack[lang]['SAVE']}</Button>
+              <Button style={{marginLeft:8}} onClick={cancelEdit}>{languagePack[lang]['CANCEL']}</Button>
+            </div>
           </>
         }
         <hr />
@@ -340,16 +358,23 @@ const Quiz = () => {
           <div className="button_Block" style={{marginTop:20,width:'100%'}}>
             <Form layout="horizontal" style={{maxWidth: 1000}}>
               <Button type="primary" onClick={()=>{saveQuiz()}} disabled={!contentChanged.current}>{languagePack[lang]['SAVE']}</Button><span style={{color:"red",fontWeight:"bold"}}> </span>
-              <Button onClick={()=>{setQuiz(null)}}>{languagePack[lang]['RESET']}</Button>
+              <Button style={{marginLeft:8}} onClick={()=>{
+/*                
+                  console.log('reset',tempQuiz.questions)
+                  console.log('reset_1',tempQuiz_1.questions)
+                  filterQuestions(tempQuiz.questions)
+*/                  
+                  navigate('/quiz')
+              }}>{languagePack[lang]['CANCEL']}</Button>
             </Form>
           </div>
           <div className="quiz_block" style={{width:'100%',display:'flex'}}>
             <div style={{width:'60%'}}>
               <h4>{languagePack[lang]['QUESTION_IN_THE_QUIZ']}: </h4>
-              <div className="quiz_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'#00aaff',width:"98%",marginRight:'2%',backgroundColor:'white'}}>
+              <div className="quiz_in" style={{display:'flex',flexWrap:'wrap',borderStyle:'solid',borderWidth:2,padding:30,borderColor:'RGB(29,142,63)',width:"98%",marginRight:'2%',backgroundColor:'white'}}>
               {quizQuestions && quizQuestions.InQuiz.length>0?quizQuestions.InQuiz.map((question,index)=>{
                   return (
-                    <div key={'student_'+question.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'#00aaff',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50,minWidth:150}}>
+                    <div key={'student_'+question.id} style={{display:'flex',borderStyle:'solid',borderWidth:2,padding:10,width:'49%',borderColor:'RGB(29,142,63)',marginBottom:4,marginLeft:"1%",cursor:'pointer',height:50,minWidth:150}}>
                       <div style={{width:'75%'}}>{question.header}</div>
                         <div><Button type="primary" onClick={()=>{outInMoveQuizquiz(question.id,'out')}}>{languagePack[lang]['REMOVE']}</Button></div>
                     </div>

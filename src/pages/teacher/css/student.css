@@ -1,0 +1,42 @@
+.colorBlue{
+    color:RGB(0,81,116);
+}
+
+.colorBlueBg{
+    background-color:RGB(200,235,250);
+}
+
+.colorOrange{
+    color:RGB(102,0,16);
+}
+
+.colorOrangeBg{
+    background-color:RGB(255,229,212);
+}
+
+.colorGreen{
+    color:RGB(8,88,32);
+}
+
+.colorLiteGreen{
+    color:RGB(107,208,137);
+}
+
+.colorGreenBg{
+    background-color:RGB(200,239,212);
+}
+
+.colorRed{
+    color:RGB(102,0,16);
+}
+
+.colorRedBg{
+    background-color:RGB(248,248,248);
+}
+
+.bgText{
+    margin:'0'; 
+    width:100%;
+    padding: 20px;
+    border-radius: 10px;
+}

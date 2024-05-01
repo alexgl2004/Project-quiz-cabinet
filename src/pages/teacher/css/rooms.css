@@ -78,6 +78,7 @@ h4.h4-right{
 
 .small-block-in, .small-block-out{
     display: flex;
+    flex-wrap: wrap;
     border: 2px solid #00aaff;
     padding: 10px;
     width: 49%;
@@ -86,10 +87,35 @@ h4.h4-right{
     cursor: pointer;
     height: 50px;
     background: #fff;
-    margin-bottom:5px;    
+    margin-bottom:5px;
+    justify-content: right;
+}
+
+.small-block-in button, .small-block-out button{
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right:-10px;
+    font-size:12px;
+    padding:0 5px;
+    line-height: 1;
+    height:20px;
 }
 
 .small-block-out{
     border: 2px solid #ccc;
 }
 
+
+.backButtonTop{
+    font-size:12px;
+    float:right;
+    background:#fff;
+    padding:5px 10px;
+    border-radius:7px;
+    text-decoration: none;
+}
+
+.backButtonTop:hover{
+    background-color:RGB(0,122,174);
+    color:#fff;
+}

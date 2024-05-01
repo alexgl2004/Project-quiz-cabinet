@@ -6,10 +6,11 @@ import { Navigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext.jsx";
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import '../teacher/css/student.css';
 
 const Login = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
 
   const { logout, login, user, userMsg } = useContext(UserContext);
 
@@ -36,8 +37,14 @@ const Login = () => {
   return (
     <>
       {user && <Navigate replace to="/profile" />}
-      <h1>{languagePack[lang]['LOGIN']}</h1>
-      <div className='form-Login'>
+      <h1 className={'color'+nameAddColorCss}>{languagePack[lang]['LOGIN']}</h1>
+      <div className={'bgText color'+nameAddColorCss+'Bg'} style={{
+        margin:'50px 160px', 
+        width:600,
+        padding: '60px 60px 30px 0px', 
+        borderRadius: 10,
+        backgroundColor: 'RGB(231,185,192)'
+      }}>
         <div className='form-Login-In'>
         <Form
           name="basic"

@@ -5,10 +5,13 @@ import StudentResults from "../../components/StudentResults.jsx";
 import { path_server } from '../../../path.js';
 import { languagePack } from '../../data/language.js';
 import { useOutletContext } from "react-router-dom";
+import './css/student.css';
 
 const Results = () => {
 
-  const [lang] = useOutletContext();
+  const [lang,nameAddColorCss] = useOutletContext();
+
+//  const [ langC, setLangC ] = useState(lang);
 
   const { user } = useContext(UserContext);
 
@@ -20,6 +23,12 @@ const Results = () => {
     navigate('/profile')
   }
 
+//  console.lang(lang)
+/*
+  useEffect(() => {
+    setLangC(lang)
+  }, [lang]);
+*/
   useEffect(() => {
 
     if(user==null){
@@ -63,14 +72,14 @@ const Results = () => {
 
   return (
     <>
-      <h1>{languagePack[lang]['RESULTS']}</h1>
+      <h1 className={(user && user.role==1?'colorBlue':'colorOrange')}>{languagePack[lang]['RESULTS']}</h1>
       {user!=null && user.role==3?
-        <StudentResults oneUser={true} userId={user.id} />:''
+        <StudentResults oneUser={true} lang={lang} colorName={nameAddColorCss} userId={user.id} />:''
       }
       
       {user!=null && user.role==1 && studentsMass?
         studentsMass.map((elem)=>{
-          return <StudentResults key={elem.id+'_student'} oneUser={false} userId={elem.id} firstname={elem.name}  lastname={elem.surname} />
+          return <StudentResults key={elem.id+'_student'} colorName={nameAddColorCss} oneUser={false} userId={elem.id} firstname={elem.name} lang={lang} lastname={elem.surname} />
         }):''
 
       }
