@@ -1,11 +1,9 @@
-import { UserOutlined, UsbOutlined, PartitionOutlined, ProjectOutlined, UsergroupAddOutlined, ReadOutlined, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined, GlobalOutlined } from '@ant-design/icons';
+import { FileDoneOutlined, OrderedListOutlined, QuestionCircleOutlined, UserOutlined, UsbOutlined, PartitionOutlined, ProjectOutlined, UsergroupAddOutlined, ReadOutlined, QqOutlined, ApiOutlined, CheckCircleTwoTone, InfoCircleOutlined, GlobalOutlined } from '@ant-design/icons';
 import { ConfigProvider, Layout, Flex, Menu, Button } from 'antd';
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { UserContext } from "../context/UserContext.jsx";
 import { languagePack } from '../data/language.js';
-
-
 
 
 const { Content, Header, Footer } = Layout;
@@ -38,7 +36,7 @@ const contentStyleAdd = {
   width:'100%',
   maxWidth:980,
   minWidth:800,
-  minHeight: 660,
+  minHeight: 800,
   height: '100%',
   lineHeight: '12px',
   padding:20,
@@ -52,7 +50,8 @@ const contentStyleAdd = {
 
 const contentStyleBlank = {
   color: '#333',
-  backgroundColor: '#FFFFFF',
+  backgroundColor: 'RGB(255,255,255)',
+  backgroundImage: 'linear-gradient(180deg, RGB(242,242,242), transparent)',
 };
 
 const contentStyleStudent = {
@@ -102,11 +101,9 @@ const footerStyleStudent = {
 }
 
 const footerStyleBlank = {
-  backgroundColor: 'RGB(184,74,91)',
-  backgroundImage: 'linear-gradient(180deg, RGB(102,0,16), transparent)',  
+  backgroundColor: 'RGB(242,242,242)',
+  backgroundImage: 'linear-gradient(180deg, RGB(122,122,122), transparent)',  
 }
-
-
 
 
 const Routerblock = () => {
@@ -190,9 +187,9 @@ const Routerblock = () => {
     userTheme.current = {
       token: {
         // Seed Token
-        colorPrimary: 'RGB(102,0,16)',
+        colorPrimary: 'RGB(122,122,122)',
 //              borderRadius: 2,
-        itemSelectedColor: 'RGB(102,0,16)',
+        itemSelectedColor: 'RGB(122,122,122)',
 
         // Alias Token
 //              colorBgContainer: 'green',
@@ -282,15 +279,18 @@ const Routerblock = () => {
                       </>
                     ):user.role==2?(
                       <>
-                        <Menu.Item key="q" icon= {<InfoCircleOutlined />}>
+                        <Menu.Item key="q" icon= {<OrderedListOutlined />}>
                           <Link to="/quiz">{languagePack[lang]['QUIZZES']}</Link>
                         </Menu.Item>
-                        <Menu.Item key="question" icon= {<InfoCircleOutlined />}>
+                        <Menu.Item key="question" icon= {<QuestionCircleOutlined />}>
                           <Link to="/questions">{languagePack[lang]['QUESTIONS']}</Link>
                         </Menu.Item>
-                        <Menu.Item key="stat" icon= {<InfoCircleOutlined />}>
-                          <Link to="/stat">{languagePack[lang]['STATISTIC']}</Link>
-                        </Menu.Item>
+                        {user.role==4?
+                          <Menu.Item key="stat" icon= {<FileDoneOutlined />}>
+                            <Link to="/stat">{languagePack[lang]['STATISTIC']}</Link>
+                          </Menu.Item>:
+                          ''
+                        }
                       </>
                     ):(
                       <>

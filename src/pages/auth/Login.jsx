@@ -42,8 +42,7 @@ const Login = () => {
         margin:'50px 160px', 
         width:600,
         padding: '60px 60px 30px 0px', 
-        borderRadius: 10,
-        backgroundColor: 'RGB(231,185,192)'
+        borderRadius: 10
       }}>
         <div className='form-Login-In'>
         <Form

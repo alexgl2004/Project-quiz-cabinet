@@ -27,11 +27,11 @@
 }
 
 .colorRed{
-    color:RGB(102,0,16);
+    color:RGB(64,64,64)
 }
 
 .colorRedBg{
-    background-color:RGB(248,248,248);
+    background-color:RGB(217,217,217)
 }
 
 .bgText{
