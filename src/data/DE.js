@@ -1,5 +1,17 @@
 export const languageDE = {
   ABOUT: "Über App",
+  
+  ABOUT_TEXT_ALL: "Unsere App bietet drei Hauptrollen: Lehrer, Testersteller und Schüler, von denen jede ihre eigenen Aufgaben zur effektiven Nutzung der App im Bildungsprozess hat.",
+  
+  ABOUT_TEXT_ALL1: "Der Testersteller ist verantwortlich für die Entwicklung und Erstellung von Testaufgaben mit Antwortoptionen. Die App bietet verschiedene Tools zum Erstellen und Bearbeiten von Fragen sowie die Möglichkeit, Bilder oder andere multimediale Elemente den Fragen hinzuzufügen. Der Testersteller hat die volle Kontrolle über den Inhalt und das Format des Tests, was es ermöglicht, ihn an spezifische Lernziele anzupassen.",
+  
+  ABOUT_TEXT_ALL2: "Der Lehrer hingegen erfüllt administrative Aufgaben im Zusammenhang mit der Verwaltung des Unterrichtsprozesses. Dazu gehören die Erstellung von Schülerkonten, die Gruppierung nach Kursen oder Klassen sowie die Zuweisung von Tests. Der Lehrer hat auch Zugang zur Überwachung des Fortschritts der Schüler, zur Anzeige von Testergebnissen und zur Bereitstellung von Feedback.",
+  
+  ABOUT_TEXT_ALL3: "Die Schüler nutzen die App, um Tests zu absolvieren und ihr Wissen zu bewerten. Sie können leicht auf die Tests zugreifen, die ihnen vom Lehrer zugewiesen wurden, und sie zu einer für sie geeigneten Zeit durchführen. Nach Abschluss des Tests erhalten die Schüler Feedback zu ihren Ergebnissen, was ihnen hilft, ihr Wissen zu bewerten und Bereiche zu identifizieren, die weitere Studien erfordern.",
+
+  ABOUT_TEXT_EDITOR:"Der Test-Editor in unserer Anwendung verfügt über die einzigartige Möglichkeit, eine unbegrenzte Anzahl von Tests zu erstellen, die den Bildungsbedürfnissen vollständig entsprechen. Dieses Tool ermöglicht die Bildung von Tests aus einer Vielzahl von Fragen mit ausgewählten korrekten Antworten und bietet den Lehrern Flexibilität und Kontrolle über den Wissensbewertungsprozess. Jeder Test wird unter Berücksichtigung der Spezifität des Lehrmaterials und der Bewertungsanforderungen erstellt, was es ermöglicht, ihn an spezifische Bildungsprogramme und Aufgaben anzupassen. Als Ergebnis kann der Test-Editor Tests nach Bedarf einfach erstellen und anpassen und so eine maximale Effizienz beim Unterrichten und bei der Bewertung der Schüler gewährleisten. Gleichwertig wie Fragen und Antworten!",
+  ABOUT_TEXT_STUDENT:"",
+  ABOUT_TEXT_TEACHER:"",
   ADD: "Hinzufügen",
   ADD_ANSWER: "Antwort hinzufügen",
   ADD_NEW_ROOM: "Einen neuen Raum erstellen",
@@ -45,6 +57,7 @@ export const languageDE = {
   HEADER: "Header",
   HEADER_OF_QUESTION: "Header der Frage",
   HOME: "Main",
+  HOME_TEXT_ALL: "Unsere App ist ein bequemer und effektiver Weg, um das Wissen der Studenten durch Tests zu bewerten. Wir bieten eine breite Palette von Fragen zu verschiedenen Themen und Fächern, die es Lehrern ermöglichen, maßgeschneiderte Tests nach ihren Bedürfnissen zu erstellen. Die Schüler können die Tests nach Belieben ablegen und erhalten sofortiges Feedback zu ihrem Wissen und ihrer Leistung. Unsere App bietet auch detaillierte Statistiken zum Testabschluss, die sowohl den Schülern als auch den Lehrern helfen, das Verständnis des Materials zu bewerten und Bereiche zu identifizieren, die weiterer Studien bedürfen. Zuverlässig, benutzerfreundlich und effizient - unsere App wird den Prozess der Wissensbewertung für alle Teilnehmer im Bildungsprozess bequemer und produktiver machen.",
   IT_IS_CORRECT_ANSWER: "Es ist die richtige Antwort",
   LOGIN: "Anmeldung",
   LOGOUT: "Ausloggen",

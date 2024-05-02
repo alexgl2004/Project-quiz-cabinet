@@ -321,7 +321,7 @@ const Routerblock = () => {
             </div>
           </Header>
           <Content style={contentStyle}>
-            <Outlet context={[lang,nameAddColorCss]} />
+            <Outlet context={[lang,nameAddColorCss,user]} />
           </Content>
           <Footer style={footerStyle}>{languagePack[lang]['FOOTER']}</Footer>
         </Layout>

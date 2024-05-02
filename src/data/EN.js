@@ -1,5 +1,17 @@
 export const languageEN = {
   ABOUT: "About",
+
+  ABOUT_TEXT_ALL: "Our app offers three main roles: teacher, test creator, and student, each of which has its own tasks for effective use of the app in the educational process.",
+  
+  ABOUT_TEXT_ALL1: "The test creator is responsible for developing and creating test tasks with answer options. The app provides various tools for creating and editing questions as well as the ability to add images or other multimedia elements to the questions. The test creator has full control over the content and format of the test, allowing it to be tailored to specific learning objectives.",
+
+  ABOUT_TEXT_ALL2: "The teacher, on the other hand, fulfills administrative tasks related to managing the teaching process. This includes creating student accounts, grouping them by courses or classes, and assigning tests. The teacher also has access to monitoring students' progress, viewing test results, and providing feedback.",
+
+  ABOUT_TEXT_ALL3: "Students use the app to take tests and assess their knowledge. They can easily access the tests assigned to them by the teacher and take them at a convenient time. After completing the test, students receive feedback on their results, helping them evaluate their knowledge and identify areas that require further study.",
+
+  ABOUT_TEXT_EDITOR:"The test editor in our application has the unique ability to create an unlimited number of tests that fully meet educational needs. This tool enables the formation of tests from a multitude of questions with selected correct answers, providing teachers with flexibility and control over the knowledge assessment process. Each test is created considering the specificity of the educational material and assessment requirements, allowing it to be tailored to specific educational programs and tasks. As a result, the test editor can easily create and customize tests as needed, ensuring maximum efficiency in teaching and student assessment. Just as equally with questions and answers.",
+  ABOUT_TEXT_STUDENT:"",
+  ABOUT_TEXT_TEACHER:"",
   ADD: "Add",
   ADD_ANSWER: "Add answer",
   ADD_NEW_ROOM: "Add new room",
@@ -42,6 +54,7 @@ export const languageEN = {
   HEADER: "Header",
   HEADER_OF_QUESTION: "Header of the question",
   HOME: "Main",
+  HOME_TEXT_ALL: "Our application is a convenient and effective way to assess students' knowledge through tests. We offer a wide range of questions on various subjects and topics, allowing teachers to create customized tests to suit their needs. Students can take tests at their own convenience, receiving instant feedback on their knowledge and performance. Our application also provides detailed statistics on test completion, helping both students and teachers assess the level of understanding of the material and identify areas that require further study. Reliable, easy to use, and efficient - our application will help make the process of assessing knowledge more convenient and productive for all participants in the educational process.",
   IT_IS_CORRECT_ANSWER: "The answer is correct",
   LOGIN: "Login",
   LOGOUT: "Logout",
